@@ -17,7 +17,7 @@ interface CalendarEvent {
     event_id: number;
     title: string;
     description: string;
-    date: string;
+    start_date: string;
   };
 }
 
@@ -72,7 +72,10 @@ export default function Account() {
       .get<UserProfile>(`http://localhost:3000/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => setUser(res.data))
+      .then((res) => {
+        console.log("🪪 User reçu :", res.data);
+        setUser(res.data);
+      })
       .catch((err) => {
         setError(
           err.response?.data?.message ||
@@ -165,14 +168,9 @@ export default function Account() {
                 </p>
                 <p>
                   <span className="font-semibold">Date :</span>{" "}
-                  {new Date(ce.event.date).toLocaleString()}
+                  {new Date(ce.event.start_date).toLocaleString()}
                 </p>
-                {ce.event.description && (
-                  <p>
-                    <span className="font-semibold">Description :</span>{" "}
-                    {ce.event.description}
-                  </p>
-                )}
+
                 {ce.wants_reminder && (
                   <p className="text-sm text-gray-600">Rappel activé</p>
                 )}
