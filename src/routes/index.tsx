@@ -9,6 +9,7 @@ import Account from "../pages/Account";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import { PrivateRoute } from "./PrivateRoute";
+import Register from "../pages/Register";
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => (
       <Route index element={<Home />} />
       <Route path="details" element={<Details />} />
       <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
 
       {/* protégées */}
       <Route element={<PrivateRoute />}>

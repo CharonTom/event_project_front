@@ -1,6 +1,9 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function MainLayout() {
+  const { token } = useAuth();
+
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     isActive
       ? "text-blue-700 font-semibold border-b-2 border-blue-700 transition-colors"
@@ -17,15 +20,28 @@ export default function MainLayout() {
           <NavLink to="/details" className={linkClasses}>
             Details
           </NavLink>
-          <NavLink to="/login" className={linkClasses}>
-            Login
+          <NavLink to="/register" className={linkClasses}>
+            Créer un compte
           </NavLink>
-          <NavLink to="/account" className={linkClasses}>
-            Account
-          </NavLink>
-          <NavLink to="/logout" className={linkClasses}>
-            Logout
-          </NavLink>
+
+          {/* Affiche Login si pas connecté */}
+          {!token && (
+            <NavLink to="/login" className={linkClasses}>
+              Se connecter
+            </NavLink>
+          )}
+
+          {/* Affiche Account et Logout si connecté */}
+          {token && (
+            <>
+              <NavLink to="/account" className={linkClasses}>
+                Mon profil
+              </NavLink>
+              <NavLink to="/logout" className={linkClasses}>
+                Se déconnecter
+              </NavLink>
+            </>
+          )}
         </nav>
       </header>
 
