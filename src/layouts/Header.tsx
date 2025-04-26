@@ -13,10 +13,10 @@ export default function Header() {
     <header className="bg-gray-100 shadow p-4">
       <nav className="flex space-x-6 justify-center">
         <NavLink to="/" className={linkClasses}>
-          Home
+          Acceuil
         </NavLink>
         <NavLink to="/details" className={linkClasses}>
-          Details
+          Détails
         </NavLink>
         <NavLink to="/register" className={linkClasses}>
           Créer un compte
