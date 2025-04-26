@@ -42,7 +42,7 @@ export default function Account() {
     let payload: JWTPayload;
     try {
       payload = jwtDecode<JWTPayload>(token);
-    } catch (e) {
+    } catch {
       setError("Token invalide.");
       setLoading(false);
       return;
@@ -79,6 +79,7 @@ export default function Account() {
         });
         // redirige vers le composant Logout pour effacer le token et retourner à /login
         navigate("/logout", { replace: true });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(
           err.response?.data?.message ||

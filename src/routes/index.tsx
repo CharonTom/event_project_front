@@ -10,6 +10,7 @@ import Login from "../auth/Login";
 import Logout from "../auth/Logout";
 import { PrivateRoute } from "./PrivateRoute";
 import Register from "../auth/Register";
+import EditAccount from "../pages/EditAccount";
 
 const AppRoutes = () => (
   <Routes>
@@ -23,6 +24,7 @@ const AppRoutes = () => (
       {/* protégées */}
       <Route element={<PrivateRoute />}>
         <Route path="account" element={<Account />} />
+        <Route path="account/edit" element={<EditAccount />} />
         <Route path="logout" element={<Logout />} />
       </Route>
 
