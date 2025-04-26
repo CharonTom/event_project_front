@@ -1,5 +1,6 @@
 // src/pages/Account.tsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
@@ -17,7 +18,7 @@ interface UserProfile {
 }
 
 interface JWTPayload {
-  id: number; // <— ici on passe sur `id`
+  id: number;
   email: string;
   role: string;
   iat: number;
@@ -26,6 +27,7 @@ interface JWTPayload {
 
 export default function Account() {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,31 +39,22 @@ export default function Account() {
       return;
     }
 
-    // 1) Décodage du token
     let payload: JWTPayload;
     try {
       payload = jwtDecode<JWTPayload>(token);
-      console.log("JWT payload :", payload); // <— log global
     } catch (e) {
-      console.error("Erreur de décodage JWT :", e);
       setError("Token invalide.");
       setLoading(false);
       return;
     }
 
-    const userId = payload.id; // <— on prend bien .id
-
-    // 2) Appel GET /users/:id
+    const userId = payload.id;
     axios
-      .get<UserProfile>(`http://localhost:3000/users/${userId}`)
+      .get<UserProfile>(`http://localhost:3000/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => setUser(res.data))
       .catch((err) => {
-        // Log détaillé de l’erreur 500
-        console.error(
-          "Erreur API /users/:id :",
-          err.response?.status,
-          err.response?.data
-        );
         setError(
           err.response?.data?.message ||
             `Erreur ${err.response?.status} lors du chargement du profil.`
@@ -69,6 +62,31 @@ export default function Account() {
       })
       .finally(() => setLoading(false));
   }, [token]);
+
+  const handleEdit = () => {
+    navigate("/account/edit");
+  };
+
+  const handleDelete = async () => {
+    if (
+      window.confirm(
+        "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+      )
+    ) {
+      try {
+        await axios.delete(`http://localhost:3000/users/${user?.user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // redirige vers le composant Logout pour effacer le token et retourner à /login
+        navigate("/logout", { replace: true });
+      } catch (err: any) {
+        setError(
+          err.response?.data?.message ||
+            "Erreur lors de la suppression du compte."
+        );
+      }
+    }
+  };
 
   if (loading) return <div>Chargement du profil…</div>;
   if (error) return <div className="text-red-600">{error}</div>;
@@ -87,7 +105,6 @@ export default function Account() {
       <p>
         <span className="font-semibold">Téléphone :</span> {user.phone}
       </p>
-
       <p>
         <span className="font-semibold">Inscrit le :</span>{" "}
         {new Date(user.created_at).toLocaleDateString()}
@@ -98,6 +115,22 @@ export default function Account() {
           {new Date(user.updated_at).toLocaleDateString()}
         </p>
       )}
+
+      {/* Boutons Modification & Suppression */}
+      <div className="flex space-x-4 pt-4">
+        <button
+          onClick={handleEdit}
+          className="flex-1 py-2 px-4 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          Modifier mes données
+        </button>
+        <button
+          onClick={handleDelete}
+          className="flex-1 py-2 px-4 border border-red-600 text-red-600 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          Supprimer mon compte
+        </button>
+      </div>
     </div>
   );
 }
