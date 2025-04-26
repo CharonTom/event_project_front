@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
         }
       );
       setToken(response.data.access_token);
-      navigate("/account", { replace: true });
+      navigate("/account", { replace: true }); // replace true pour éviter de revenir à la page de connexion avec le bouton "retour" du navigateur
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur de connexion");
@@ -80,6 +80,15 @@ const Login: React.FC = () => {
             >
               Se connecter
             </button>
+            <p className="p-2">
+              Pas encore inscrit ?{" "}
+              <Link
+                to="/register"
+                className="text-indigo-600 hover:text-indigo-800 font-medium"
+              >
+                Inscrivez vous ici
+              </Link>
+            </p>
           </div>
         </form>
       </div>

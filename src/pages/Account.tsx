@@ -1,5 +1,5 @@
 // src/pages/Account.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
@@ -87,9 +87,7 @@ export default function Account() {
       <p>
         <span className="font-semibold">Téléphone :</span> {user.phone}
       </p>
-      <p>
-        <span className="font-semibold">Rôle :</span> {user.role}
-      </p>
+
       <p>
         <span className="font-semibold">Inscrit le :</span>{" "}
         {new Date(user.created_at).toLocaleDateString()}

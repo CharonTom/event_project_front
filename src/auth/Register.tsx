@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 
@@ -21,7 +21,7 @@ const Register: React.FC = () => {
     setError(null);
 
     try {
-      const { data } = await axios.post<{ access_token: string }>(
+      const response = await axios.post<{ access_token: string }>(
         "http://localhost:3000/auth/register",
         {
           first_name: firstName,
@@ -32,7 +32,7 @@ const Register: React.FC = () => {
         }
       );
       // l'API retourne directement access_token
-      setToken(data.access_token);
+      setToken(response.data.access_token);
       navigate("/account", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -108,6 +108,15 @@ const Register: React.FC = () => {
             {loading ? "Inscription…" : "S’inscrire"}
           </button>
         </form>
+        <p className="p-2">
+          Déjà inscrit ?{" "}
+          <Link
+            to="/login"
+            className="text-indigo-600 hover:text-indigo-800 font-medium"
+          >
+            Connectez vous ici
+          </Link>
+        </p>
       </div>
     </div>
   );

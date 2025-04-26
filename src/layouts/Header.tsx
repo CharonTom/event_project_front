@@ -16,9 +16,9 @@ export default function Header() {
         <NavLink to="/" className={linkClasses}>
           Acceuil
         </NavLink>
-        <NavLink to="/register" className={linkClasses}>
+        {/* <NavLink to="/register" className={linkClasses}>
           Créer un compte
-        </NavLink>
+        </NavLink> */}
 
         {/* Affiche Login si pas connecté */}
         {!token && (
