@@ -10,13 +10,11 @@ export default function Header() {
       : "text-blue-600 hover:text-blue-800 transition-colors";
 
   return (
-    <header className="bg-gray-100 shadow p-4">
-      <nav className="flex space-x-6 justify-center">
+    <header className="bg-gray-100 shadow py-6 px-18 flex justify-between items-center">
+      <div>Logo</div>
+      <nav className="flex gap-x-8">
         <NavLink to="/" className={linkClasses}>
           Acceuil
-        </NavLink>
-        <NavLink to="/details" className={linkClasses}>
-          Détails
         </NavLink>
         <NavLink to="/register" className={linkClasses}>
           Créer un compte
