@@ -17,8 +17,14 @@ export default function MainLayout() {
           <NavLink to="/details" className={linkClasses}>
             Details
           </NavLink>
+          <NavLink to="/login" className={linkClasses}>
+            Login
+          </NavLink>
           <NavLink to="/account" className={linkClasses}>
             Account
+          </NavLink>
+          <NavLink to="/logout" className={linkClasses}>
+            Logout
           </NavLink>
         </nav>
       </header>
