@@ -5,6 +5,22 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 
+interface CalendarEvent {
+  calendar_event_id: number;
+  added_at: string;
+  wants_reminder: boolean;
+  reminder_7d_sent: boolean;
+  reminder_7d_sent_at: string | null;
+  reminder_1d_sent: boolean;
+  reminder_1d_sent_at: string | null;
+  event: {
+    event_id: number;
+    title: string;
+    description: string;
+    date: string;
+  };
+}
+
 interface UserProfile {
   user_id: number;
   first_name: string;
@@ -14,7 +30,10 @@ interface UserProfile {
   role: string;
   created_at: string;
   updated_at: string | null;
-  calendar: { calendar_id: number };
+  calendar: {
+    calendar_id: number;
+    events: CalendarEvent[];
+  };
 }
 
 interface JWTPayload {
@@ -132,6 +151,36 @@ export default function Account() {
           Supprimer mon compte
         </button>
       </div>
+      <section>
+        <h2 className="text-xl font-semibold">Mon calendrier</h2>
+        {user.calendar.events.length === 0 ? (
+          <p>Aucun événement enregistré.</p>
+        ) : (
+          <ul className="space-y-4">
+            {user.calendar.events.map((ce) => (
+              <li key={ce.calendar_event_id} className="p-4 border rounded-lg">
+                <p>
+                  <span className="font-semibold">Titre :</span>{" "}
+                  {ce.event.title}
+                </p>
+                <p>
+                  <span className="font-semibold">Date :</span>{" "}
+                  {new Date(ce.event.date).toLocaleString()}
+                </p>
+                {ce.event.description && (
+                  <p>
+                    <span className="font-semibold">Description :</span>{" "}
+                    {ce.event.description}
+                  </p>
+                )}
+                {ce.wants_reminder && (
+                  <p className="text-sm text-gray-600">Rappel activé</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
