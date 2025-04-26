@@ -1,9 +1,8 @@
-import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext";
 import AppRoutes from "./routes/index";
 
-const App: React.FC = () => (
+const App = () => (
   <AuthProvider>
     <Router>
       <AppRoutes />

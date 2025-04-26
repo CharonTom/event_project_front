@@ -6,12 +6,12 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Details from "../pages/Details";
 import Account from "../pages/Account";
-import Login from "../pages/Login";
-import Logout from "../pages/Logout";
+import Login from "../auth/Login";
+import Logout from "../auth/Logout";
 import { PrivateRoute } from "./PrivateRoute";
-import Register from "../pages/Register";
+import Register from "../auth/Register";
 
-const AppRoutes: React.FC = () => (
+const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<MainLayout />}>
       {/* publiques */}
