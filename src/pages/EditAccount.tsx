@@ -29,11 +29,11 @@ export default function EditAccount() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Décoder le token pour récupérer l'ID utilisateur
   useEffect(() => {
     if (!token) {
       setError("Vous devez être connecté.");
@@ -49,7 +49,6 @@ export default function EditAccount() {
       return;
     }
 
-    // Récupérer les données utilisateur existantes
     axios
       .get<UserProfile>(`http://localhost:3000/users/${payload.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -74,25 +73,23 @@ export default function EditAccount() {
     setSaving(true);
     setError(null);
 
-    // Décoder à nouveau pour être sûr d'avoir l'ID
     const { id: userId } = jwtDecode<JWTPayload>(token!);
 
+    const payload: Record<string, any> = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
+    };
+    if (password) {
+      payload.password = password;
+    }
+
     try {
-      await axios.patch(
-        `http://localhost:3000/users/${userId}`,
-        {
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          phone,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      // Après MAJ, revenir à la page de profil
+      await axios.patch(`http://localhost:3000/users/${userId}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       navigate("/account", { replace: true });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -110,7 +107,8 @@ export default function EditAccount() {
     <div className="max-w-md mx-auto p-6 bg-white shadow rounded-lg space-y-6">
       <h1 className="text-2xl font-bold text-center">Modifier mon profil</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div>
+          <p>Prénom</p>
           <input
             type="text"
             placeholder="Prénom"
@@ -119,6 +117,9 @@ export default function EditAccount() {
             onChange={(e) => setFirstName(e.target.value)}
             className="border rounded px-3 py-2 w-full"
           />
+        </div>
+        <div>
+          <p>Nom</p>
           <input
             type="text"
             placeholder="Nom"
@@ -128,23 +129,38 @@ export default function EditAccount() {
             className="border rounded px-3 py-2 w-full"
           />
         </div>
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border rounded px-3 py-2"
-        />
-        <input
-          type="tel"
-          placeholder="Téléphone"
-          required
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full border rounded px-3 py-2"
-        />
-
+        <div>
+          <p>Email</p>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+        <div>
+          <p>Téléphone</p>
+          <input
+            type="tel"
+            placeholder="Téléphone"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+        <div>
+          <p>Nouveau mot de passe</p>
+          <input
+            type="password"
+            placeholder="Nouveau mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
         <button
           type="submit"
           disabled={saving}

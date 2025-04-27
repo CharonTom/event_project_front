@@ -97,6 +97,7 @@ const Details = () => {
           >
             Voir tous les événements
           </Link>
+          <button>Ajouter au Calendrier</button>
         </div>
       </div>
     </div>

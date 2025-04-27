@@ -111,6 +111,28 @@ export default function Account() {
     }
   };
 
+  const removeFromCalendar = async (eventId: number) => {
+    if (
+      window.confirm(
+        "Êtes-vous sûr de vouloir supprimer cet événement de votre calendrier ?"
+      )
+    ) {
+      try {
+        await axios.delete(
+          `http://localhost:3000/users/${user?.user_id}/calendar/events/${eventId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      } catch (err: any) {
+        setError(
+          err.response?.data?.message ||
+            "Erreur lors de la suppression de l'événement."
+        );
+      }
+    }
+  };
+
   if (loading) return <div>Chargement du profil…</div>;
   if (error) return <div className="text-red-600">{error}</div>;
   if (!user) return null;
@@ -174,6 +196,9 @@ export default function Account() {
                 {ce.wants_reminder && (
                   <p className="text-sm text-gray-600">Rappel activé</p>
                 )}
+                <button onClick={() => removeFromCalendar(ce.event.event_id)}>
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
