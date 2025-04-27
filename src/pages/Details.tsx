@@ -2,23 +2,86 @@
 import { useContext } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../contexts/AuthContext";
+import axios from "axios";
+
+export interface Event {
+  event_id: number;
+  title: string;
+  date: string;
+  location: string;
+  city: string;
+  start_date: string;
+  end_date: string;
+  price: string;
+  description: string;
+  is_premium: boolean;
+  // à faire évoluer
+}
+
+interface JWTPayload {
+  id: number;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
 
 const Details = () => {
-  const { id } = useParams<{ id: string }>();
-
-  const eventId = Number(id);
+  const { token } = useAuth();
   const navigate = useNavigate();
   const { events } = useContext(EventContext);
-
-  const evt = events.find((e) => e.event_id === eventId); // Vérification sur l'évenement de l'url et le même que celui de l'event dans l'API
+  const { id } = useParams<{ id: string }>();
+  const eventId = Number(id);
+  const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
+  console.log(evt?.event_id);
 
   if (!evt) {
+    // ici, evt est forcément undefined
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">Événement introuvable…</p>
       </div>
     );
   }
+
+  let userId: number | null = null;
+  if (token) {
+    try {
+      const payload = jwtDecode<JWTPayload>(token);
+      userId = payload.id; // On récupère l'id du User directement dans son Token
+      console.log(userId);
+    } catch {
+      console.warn("Token invalide, impossible de récupérer l'userId");
+    }
+  }
+  const AddEventToCalendar = async () => {
+    if (
+      window.confirm(
+        "Êtes-vous sûr de vouloir ajouter cet événement de votre calendrier ?"
+      )
+    ) {
+      try {
+        await axios.post(
+          `http://localhost:3000/users/${userId}/calendar/events`,
+          {
+            event_id: evt.event_id,
+            wants_reminder: true,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.log(
+          err.response?.data?.message ||
+            "Erreur lors de l'ajout de l'événement."
+        );
+      }
+    }
+  };
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("fr-FR", {
@@ -97,7 +160,7 @@ const Details = () => {
           >
             Voir tous les événements
           </Link>
-          <button>Ajouter au Calendrier</button>
+          <button onClick={AddEventToCalendar}>Ajouter au Calendrier</button>
         </div>
       </div>
     </div>
