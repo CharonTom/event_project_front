@@ -93,18 +93,43 @@ const Details = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex justify-center">
-      <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
-        {/* Bannière */}
-        <div className="bg-indigo-600 rounded-t-2xl p-6">
-          <h1 className="text-4xl font-extrabold text-white">{evt.title}</h1>
-          <p className="mt-1 text-indigo-200">
-            {evt.city} • {formatDate(evt.start_date)}
-          </p>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="bg-gray-200 h-40 w-full m-2 rounded-3xl">img</div>
+      <h1 className="text-4xl font-extrabold">{evt.title}</h1>
+      <div>
+        <div className="flex items-center gap-x-4">
+          <div>Date Logo</div>
+          <div className="">
+            <div>jour</div>
+            <div>heure</div>
+          </div>
         </div>
-
+        <div className="flex items-center gap-x-4">
+          <div>Loc Logo</div>
+          <div className="">
+            <div>Lieu</div>
+            <div>Adresse</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-x-4">
+          <div>Profil pic</div>
+          <div className="">
+            <div>Organizer name</div>
+            <div>Organizer</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p>Tags</p>
+        <div>Lists of tags</div>
+      </div>
+      <div>
+        <div>description</div>
+        <div>{evt.description}</div>
+      </div>
+      <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
         {/* Contenu */}
-        <div className="p-6 space-y-4">
+        <div className="p-6 bg-pink-50 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <h2 className="text-lg font-semibold text-gray-700">Dates</h2>
