@@ -51,12 +51,12 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!token) {
-      setError("Vous devez être connecté.");
-      setLoading(false);
-      return;
-    }
+  // Fonction pour charger (ou recharger) le profil utilisateur
+  const fetchProfile = () => {
+    if (!token) return;
+
+    setLoading(true);
+    setError(null);
 
     let payload: JWTPayload;
     try {
@@ -72,17 +72,24 @@ export default function Account() {
       .get<UserProfile>(`http://localhost:3000/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => {
-        console.log("🪪 User reçu :", res.data);
-        setUser(res.data);
-      })
-      .catch((err) => {
+      .then((res) => setUser(res.data))
+      .catch((err) =>
         setError(
           err.response?.data?.message ||
             `Erreur ${err.response?.status} lors du chargement du profil.`
-        );
-      })
+        )
+      )
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    if (!token) {
+      setError("Vous devez être connecté.");
+      setLoading(false);
+      return;
+    }
+    fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const handleEdit = () => {
@@ -99,9 +106,7 @@ export default function Account() {
         await axios.delete(`http://localhost:3000/users/${user?.user_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // redirige vers le composant Logout pour effacer le token et retourner à /login
         navigate("/logout", { replace: true });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(
           err.response?.data?.message ||
@@ -124,7 +129,8 @@ export default function Account() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // Recharger le profil pour mettre à jour la liste des événements
+        fetchProfile();
       } catch (err: any) {
         setError(
           err.response?.data?.message ||
@@ -139,7 +145,15 @@ export default function Account() {
   if (!user) return null;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-4">
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
+      {/* Bouton pour accéder à la page de création d'événement */}
+      <button
+        onClick={() => navigate("/events/create")}
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+      >
+        Créer un événement
+      </button>
+
       <h1 className="text-2xl font-bold">Mon profil</h1>
       <p>
         <span className="font-semibold">Nom :</span> {user.first_name}{" "}
@@ -162,7 +176,7 @@ export default function Account() {
         </p>
       )}
 
-      {/* Boutons Modification & Suppression */}
+      {/* Boutons Modification & Suppression de compte */}
       <div className="flex space-x-4 pt-4">
         <button
           onClick={handleEdit}
@@ -177,6 +191,8 @@ export default function Account() {
           Supprimer mon compte
         </button>
       </div>
+
+      {/* Section Mon calendrier */}
       <section>
         <h2 className="text-xl font-semibold">Mon calendrier</h2>
         {user.calendar.events.length === 0 ? (
@@ -184,7 +200,10 @@ export default function Account() {
         ) : (
           <ul className="space-y-4">
             {user.calendar.events.map((ce) => (
-              <li key={ce.calendar_event_id} className="p-4 border rounded-lg">
+              <li
+                key={ce.calendar_event_id}
+                className="p-4 border rounded-lg space-y-2"
+              >
                 <p>
                   <span className="font-semibold">Titre :</span>{" "}
                   {ce.event.title}
@@ -193,12 +212,14 @@ export default function Account() {
                   <span className="font-semibold">Date :</span>{" "}
                   {new Date(ce.event.start_date).toLocaleString()}
                 </p>
-
                 {ce.wants_reminder && (
                   <p className="text-sm text-gray-600">Rappel activé</p>
                 )}
-                <button onClick={() => removeFromCalendar(ce.event.event_id)}>
-                  Delete
+                <button
+                  onClick={() => removeFromCalendar(ce.event.event_id)}
+                  className="text-red-600 hover:underline"
+                >
+                  Supprimer de mon calendrier
                 </button>
               </li>
             ))}

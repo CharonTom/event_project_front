@@ -10,6 +10,7 @@ import Logout from "../auth/Logout";
 import { PrivateRoute } from "./PrivateRoute";
 import Register from "../auth/Register";
 import EditAccount from "../pages/EditAccount";
+import CreateEvent from "../pages/CreateEvent";
 
 const AppRoutes = () => (
   <Routes>
@@ -24,6 +25,7 @@ const AppRoutes = () => (
       <Route element={<PrivateRoute />}>
         <Route path="account" element={<Account />} />
         <Route path="account/edit" element={<EditAccount />} />
+        <Route path="events/create" element={<CreateEvent />} />
         <Route path="logout" element={<Logout />} />
       </Route>
 
