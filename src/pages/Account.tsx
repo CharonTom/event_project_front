@@ -147,12 +147,6 @@ export default function Account() {
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
       {/* Bouton pour accéder à la page de création d'événement */}
-      <button
-        onClick={() => navigate("/events/create")}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Créer un événement
-      </button>
 
       <h1 className="text-2xl font-bold">Mon profil</h1>
       <p>
@@ -226,6 +220,12 @@ export default function Account() {
           </ul>
         )}
       </section>
+      <button
+        onClick={() => navigate("/events/create")}
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+      >
+        Créer un événement
+      </button>
     </div>
   );
 }

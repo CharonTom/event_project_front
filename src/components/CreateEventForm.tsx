@@ -42,16 +42,15 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
   const [loading, setLoading] = useState(false);
 
   // Récupère la liste des catégories
+  // src/components/CreateEventForm.tsx
   useEffect(() => {
     axios
-      .get<Category[]>("http://localhost:3000/categories", {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      })
+      .get<Category[]>("http://localhost:3000/categories")
       .then((res) => setCategories(res.data))
       .catch((err) =>
         console.error("Impossible de charger les catégories", err)
       );
-  }, [token]);
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
