@@ -1,3 +1,4 @@
+// src/components/Header.tsx
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -14,30 +15,17 @@ export default function Header() {
       <div>Logo</div>
       <nav className="flex gap-x-8">
         <NavLink to="/" className={linkClasses}>
-          Acceuil
+          Home
         </NavLink>
-        {/* <NavLink to="/register" className={linkClasses}>
-          Créer un compte
-        </NavLink> */}
-
-        {/* Affiche Login si pas connecté */}
-        {!token && (
-          <NavLink to="/login" className={linkClasses}>
-            Se connecter
-          </NavLink>
-        )}
-
-        {/* Affiche Account et Logout si connecté */}
-        {token && (
-          <>
-            <NavLink to="/account" className={linkClasses}>
-              Mon profil
-            </NavLink>
-            <NavLink to="/logout" className={linkClasses}>
-              Se déconnecter
-            </NavLink>
-          </>
-        )}
+        <NavLink to="/explore" className={linkClasses}>
+          Explore
+        </NavLink>
+        <NavLink to="/account" className={linkClasses}>
+          Profil
+        </NavLink>
+        <NavLink to="/calendar" className={linkClasses}>
+          Agenda
+        </NavLink>
       </nav>
     </header>
   );

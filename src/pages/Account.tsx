@@ -1,25 +1,9 @@
 // src/pages/Account.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-
-interface CalendarEvent {
-  calendar_event_id: number;
-  added_at: string;
-  wants_reminder: boolean;
-  reminder_7d_sent: boolean;
-  reminder_7d_sent_at: string | null;
-  reminder_1d_sent: boolean;
-  reminder_1d_sent_at: string | null;
-  event: {
-    event_id: number;
-    title: string;
-    description: string;
-    start_date: string;
-  };
-}
 
 interface UserProfile {
   user_id: number;
@@ -30,10 +14,6 @@ interface UserProfile {
   role: string;
   created_at: string;
   updated_at: string | null;
-  calendar: {
-    calendar_id: number;
-    events: CalendarEvent[];
-  };
 }
 
 interface JWTPayload {
@@ -47,12 +27,12 @@ interface JWTPayload {
 export default function Account() {
   const { token } = useAuth();
   const navigate = useNavigate();
+
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fonction pour charger (ou recharger) le profil utilisateur
-  const fetchProfile = () => {
+  const fetchProfile = useCallback(async () => {
     if (!token) return;
 
     setLoading(true);
@@ -67,20 +47,21 @@ export default function Account() {
       return;
     }
 
-    const userId = payload.id;
-    axios
-      .get<UserProfile>(`http://localhost:3000/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setUser(res.data))
-      .catch((err) =>
-        setError(
-          err.response?.data?.message ||
-            `Erreur ${err.response?.status} lors du chargement du profil.`
-        )
-      )
-      .finally(() => setLoading(false));
-  };
+    try {
+      const { data } = await axios.get<UserProfile>(
+        `http://localhost:3000/users/${payload.id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUser(data);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          `Erreur ${err.response?.status} lors du chargement du profil.`
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -89,8 +70,7 @@ export default function Account() {
       return;
     }
     fetchProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, fetchProfile]);
 
   const handleEdit = () => {
     navigate("/account/edit");
@@ -98,46 +78,27 @@ export default function Account() {
 
   const handleDelete = async () => {
     if (
-      window.confirm(
+      !window.confirm(
         "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
       )
-    ) {
-      try {
-        await axios.delete(`http://localhost:3000/users/${user?.user_id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        navigate("/logout", { replace: true });
-      } catch (err: any) {
-        setError(
-          err.response?.data?.message ||
-            "Erreur lors de la suppression du compte."
-        );
-      }
+    )
+      return;
+
+    try {
+      await axios.delete(`http://localhost:3000/users/${user?.user_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      navigate("/logout", { replace: true });
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          "Erreur lors de la suppression du compte."
+      );
     }
   };
 
-  const removeFromCalendar = async (eventId: number) => {
-    if (
-      window.confirm(
-        "Êtes-vous sûr de vouloir supprimer cet événement de votre calendrier ?"
-      )
-    ) {
-      try {
-        await axios.delete(
-          `http://localhost:3000/users/${user?.user_id}/calendar/events/${eventId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        // Recharger le profil pour mettre à jour la liste des événements
-        fetchProfile();
-      } catch (err: any) {
-        setError(
-          err.response?.data?.message ||
-            "Erreur lors de la suppression de l'événement."
-        );
-      }
-    }
+  const handleLogout = () => {
+    navigate("/logout");
   };
 
   if (loading) return <div>Chargement du profil…</div>;
@@ -146,9 +107,8 @@ export default function Account() {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
-      {/* Bouton pour accéder à la page de création d'événement */}
-
       <h1 className="text-2xl font-bold">Mon profil</h1>
+
       <p>
         <span className="font-semibold">Nom :</span> {user.first_name}{" "}
         {user.last_name}
@@ -170,7 +130,6 @@ export default function Account() {
         </p>
       )}
 
-      {/* Boutons Modification & Suppression de compte */}
       <div className="flex space-x-4 pt-4">
         <button
           onClick={handleEdit}
@@ -178,54 +137,21 @@ export default function Account() {
         >
           Modifier mes données
         </button>
+
         <button
           onClick={handleDelete}
           className="flex-1 py-2 px-4 border border-red-600 text-red-600 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           Supprimer mon compte
         </button>
-      </div>
 
-      {/* Section Mon calendrier */}
-      <section>
-        <h2 className="text-xl font-semibold">Mon calendrier</h2>
-        {user.calendar.events.length === 0 ? (
-          <p>Aucun événement enregistré.</p>
-        ) : (
-          <ul className="space-y-4">
-            {user.calendar.events.map((ce) => (
-              <li
-                key={ce.calendar_event_id}
-                className="p-4 border rounded-lg space-y-2"
-              >
-                <p>
-                  <span className="font-semibold">Titre :</span>{" "}
-                  {ce.event.title}
-                </p>
-                <p>
-                  <span className="font-semibold">Date :</span>{" "}
-                  {new Date(ce.event.start_date).toLocaleString()}
-                </p>
-                {ce.wants_reminder && (
-                  <p className="text-sm text-gray-600">Rappel activé</p>
-                )}
-                <button
-                  onClick={() => removeFromCalendar(ce.event.event_id)}
-                  className="text-red-600 hover:underline"
-                >
-                  Supprimer de mon calendrier
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-      <button
-        onClick={() => navigate("/events/create")}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Créer un événement
-      </button>
+        <button
+          onClick={handleLogout}
+          className="flex-1 py-2 px-4 border border-gray-600 text-gray-600 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
+        >
+          Se déconnecter
+        </button>
+      </div>
     </div>
   );
 }
