@@ -2,6 +2,15 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import axios from "axios";
 
+export interface Category {
+  category_id: number;
+  name: string;
+  parent?: {
+    category_id: number;
+    name: string;
+  };
+}
+
 export interface Event {
   event_id: number;
   title: string;
@@ -14,6 +23,8 @@ export interface Event {
   description: string;
   is_premium: boolean;
   image?: string;
+  categories?: Category[];
+
   // à faire évoluer
 }
 
