@@ -13,6 +13,7 @@ export interface Event {
   price: string;
   description: string;
   is_premium: boolean;
+  image?: string;
   // à faire évoluer
 }
 

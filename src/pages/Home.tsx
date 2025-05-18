@@ -31,6 +31,11 @@ const Home = () => {
             className="bg-white rounded-2xl shadow p-6 flex flex-col justify-between"
           >
             <div>
+              <img
+                src={evt.image}
+                alt={evt.title}
+                className="w-full h-48 object-cover rounded-t-2xl mb-4"
+              />
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                 {evt.title}
               </h2>

@@ -17,6 +17,7 @@ export interface Event {
   price: string;
   description: string;
   is_premium: boolean;
+  image?: string;
   // à faire évoluer
 }
 
@@ -94,7 +95,7 @@ const Details = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="bg-gray-200 h-40 w-full m-2 rounded-3xl">img</div>
+      <img src={evt.image} />
       <h1 className="text-4xl font-extrabold">{evt.title}</h1>
       <div>
         <div className="flex items-center gap-x-4">

@@ -1,23 +1,11 @@
 // src/components/CreateEventForm.tsx
 import { useState, useEffect, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 
 interface Category {
   category_id: number;
   name: string;
-}
-
-interface CreateEventDto {
-  title: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  location: string;
-  city: string;
-  price: number;
-  category_id: number[];
 }
 
 interface Props {
@@ -27,7 +15,6 @@ interface Props {
 
 export default function CreateEventForm({ onSuccess, onCancel }: Props) {
   const { token } = useAuth();
-  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -38,11 +25,12 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
   const [price, setPrice] = useState<number>(0);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCats, setSelectedCats] = useState<number[]>([]);
+  const [file, setFile] = useState<File | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Récupère la liste des catégories
-  // src/components/CreateEventForm.tsx
+  // Charge les catégories disponibles
   useEffect(() => {
     axios
       .get<Category[]>("http://localhost:3000/categories")
@@ -57,20 +45,28 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
     setLoading(true);
     setError(null);
 
-    const dto: CreateEventDto = {
-      title,
-      description,
-      start_date: startDate,
-      end_date: endDate,
-      location,
-      city,
-      price,
-      category_id: selectedCats,
-    };
+    // Construction du FormData
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("start_date", startDate);
+    formData.append("end_date", endDate);
+    formData.append("location", location);
+    formData.append("city", city);
+    formData.append("price", price.toString());
+    selectedCats.forEach((catId) => {
+      formData.append("category_id", catId.toString());
+    });
+    if (file) {
+      formData.append("image", file);
+    }
 
     try {
-      await axios.post("http://localhost:3000/events", dto, {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.post("http://localhost:3000/events", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Ne pas fixer manuellement content-type ici
+        },
       });
       onSuccess();
     } catch (err: any) {
@@ -89,6 +85,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
 
       {error && <p className="text-red-600">{error}</p>}
 
+      {/* Titre */}
       <div>
         <label className="block font-medium">Titre</label>
         <input
@@ -100,6 +97,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label className="block font-medium">Description</label>
         <textarea
@@ -110,6 +108,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         />
       </div>
 
+      {/* Dates */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block font-medium">Date de début</label>
@@ -133,6 +132,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         </div>
       </div>
 
+      {/* Lieu et Ville */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block font-medium">Lieu</label>
@@ -156,6 +156,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         </div>
       </div>
 
+      {/* Prix */}
       <div>
         <label className="block font-medium">Prix (€)</label>
         <input
@@ -169,6 +170,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         />
       </div>
 
+      {/* Catégories */}
       <div>
         <label className="block font-medium">Catégories</label>
         <select
@@ -190,6 +192,22 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
         </select>
       </div>
 
+      {/* Upload d'image */}
+      <div>
+        <label className="block font-medium">Image de l'événement</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              setFile(e.target.files[0]);
+            }
+          }}
+          className="w-full"
+        />
+      </div>
+
+      {/* Boutons */}
       <div className="flex space-x-4 pt-2">
         <button
           type="submit"
