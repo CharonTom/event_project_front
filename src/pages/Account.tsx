@@ -53,6 +53,7 @@ export default function Account() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -89,6 +90,7 @@ export default function Account() {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/logout", { replace: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -150,6 +152,12 @@ export default function Account() {
           className="flex-1 py-2 px-4 border border-gray-600 text-gray-600 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500"
         >
           Se déconnecter
+        </button>
+        <button
+          onClick={() => navigate("/my-events")}
+          className="flex-1 py-2 px-4 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Mes événements
         </button>
       </div>
     </div>

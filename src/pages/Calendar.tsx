@@ -1,6 +1,5 @@
 // src/pages/Calendar.tsx
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
@@ -34,7 +33,6 @@ interface JWTPayload {
 
 export default function CalendarPage() {
   const { token } = useAuth();
-  const navigate = useNavigate();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,6 +89,7 @@ export default function CalendarPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchEvents();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -134,12 +133,6 @@ export default function CalendarPage() {
           ))}
         </ul>
       )}
-      <button
-        onClick={() => navigate("/events/create")}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Créer un événement
-      </button>
     </div>
   );
 }

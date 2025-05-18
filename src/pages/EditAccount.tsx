@@ -75,7 +75,7 @@ export default function EditAccount() {
 
     const { id: userId } = jwtDecode<JWTPayload>(token!);
 
-    const payload: Record<string, any> = {
+    const payload: Record<string, unknown> = {
       first_name: firstName,
       last_name: lastName,
       email,
@@ -90,6 +90,7 @@ export default function EditAccount() {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/account", { replace: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
