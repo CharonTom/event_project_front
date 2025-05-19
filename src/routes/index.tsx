@@ -13,6 +13,7 @@ import EditAccount from "../pages/EditAccount";
 import CreateEvent from "../pages/CreateEvent";
 import Calendar from "../pages/Calendar";
 import MyEvents from "../pages/MyEvents";
+import EditMyEvent from "../pages/EditMyEvent";
 
 const AppRoutes = () => (
   <Routes>
@@ -31,6 +32,7 @@ const AppRoutes = () => (
         <Route path="events/create" element={<CreateEvent />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="/events/:id/edit" element={<EditMyEvent />} />
       </Route>
 
       {/* catch-all */}

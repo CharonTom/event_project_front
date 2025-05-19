@@ -95,7 +95,7 @@ const Details = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <img src={evt.image} />
+      <img src={`http://localhost:3000${evt.image}`} />
       <h1 className="text-4xl font-extrabold">{evt.title}</h1>
       <div>
         <div className="flex items-center gap-x-4">

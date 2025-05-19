@@ -5,11 +5,18 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 
+interface Category {
+  category_id: number;
+  name: string;
+}
+
 interface EventItem {
   event_id: number;
   title: string;
   description: string;
   start_date: string;
+  image: string | null;
+  categories: Category[];
 }
 
 interface JWTPayload {
@@ -28,7 +35,6 @@ export default function Events() {
 
   const fetchMyEvents = useCallback(async () => {
     if (!token) return;
-
     setLoading(true);
     setError(null);
 
@@ -47,7 +53,6 @@ export default function Events() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEvents(data);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -62,32 +67,80 @@ export default function Events() {
     fetchMyEvents();
   }, [fetchMyEvents]);
 
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Voulez-vous vraiment supprimer cet événement ?"))
+      return;
+    try {
+      await axios.delete(`http://localhost:3000/events/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchMyEvents();
+    } catch (err: any) {
+      alert(
+        err.response?.data?.message ||
+          `Erreur ${err.response?.status} lors de la suppression.`
+      );
+    }
+  };
+
   if (loading) return <div>Chargement de vos événements…</div>;
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
       <h1 className="text-2xl font-bold">Mes événements</h1>
 
       {events.length === 0 ? (
         <p>Vous n'avez encore créé aucun événement.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           {events.map((ev) => (
-            <li key={ev.event_id} className="p-4 border rounded-lg space-y-2">
-              <p>
-                <span className="font-semibold">Titre :</span> {ev.title}
-              </p>
-              <p>
-                <span className="font-semibold">Date :</span>{" "}
-                {new Date(ev.start_date).toLocaleString()}
-              </p>
-              {ev.description && (
-                <p>
-                  <span className="font-semibold">Description :</span>{" "}
-                  {ev.description}
-                </p>
+            <li
+              key={ev.event_id}
+              className="p-4 border rounded-lg flex flex-col sm:flex-row sm:space-x-6"
+            >
+              {/* Image */}
+              {ev.image && (
+                <img
+                  src={`http://localhost:3000${ev.image}`}
+                  alt={ev.title}
+                  className="w-full h-48 sm:w-48 sm:h-32 object-cover rounded-lg mb-4 sm:mb-0"
+                />
               )}
+              <div className="flex-1 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">{ev.title}</h2>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {new Date(ev.start_date).toLocaleString()}
+                  </p>
+                  {ev.description && <p className="mb-2">{ev.description}</p>}
+                  {/* Catégories */}
+                  <div className="flex flex-wrap gap-2">
+                    {ev.categories.map((cat) => (
+                      <span
+                        key={cat.category_id}
+                        className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                      >
+                        {cat.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-4 flex space-x-2 justify-end">
+                  <button
+                    onClick={() => navigate(`/events/${ev.event_id}/edit`)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    onClick={() => handleDelete(ev.event_id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

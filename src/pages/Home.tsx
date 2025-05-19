@@ -5,7 +5,9 @@ import { EventContext, Event } from "../contexts/EventContext";
 
 const Home = () => {
   const { events } = useContext(EventContext);
+  console.log(events);
 
+  // formate une date ISO en chaîne au format français
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", {
       day: "2-digit",
@@ -15,40 +17,30 @@ const Home = () => {
       minute: "2-digit",
     });
 
-  // Regroupement par catégorie parente
+  // On crée un objet pour regrouper les événements par nom de catégorie parente
   const eventsByParent: Record<string, Event[]> = {};
+
+  // Parcours de chaque événement
   events.forEach((evt) => {
+    //  Si evt.categories existe et contient au moins un élément…
     const parents = evt.categories?.length
-      ? Array.from(
+      ? // Un Set n’est pas un tableau ; pour le transformer en tableau (afin de pouvoir boucler dessus, indexer, etc.), on utilise Array.from().
+        Array.from(
+          // Un Set en JavaScript est une collection de valeurs uniques. Passer le tableau au constructeur new Set(...) enlève automatiquement les doublons.
           new Set(evt.categories.map((cat) => cat.parent?.name ?? cat.name))
         )
       : ["Sans catégorie"];
 
     parents.forEach((parent) => {
-      (eventsByParent[parent] ??= []).push(evt);
+      if (eventsByParent[parent] === undefined) {
+        eventsByParent[parent] = [];
+      }
+      eventsByParent[parent].push(evt);
     });
   });
 
-  // Optionnel : ordre fixe des sections
-  const desiredOrder = ["Sport", "Musique", "Technologies"];
-  const parentNames = Object.keys(eventsByParent).sort((a, b) => {
-    // 1) Cas spécial : "Sans catégorie" toujours en dernier
-    if (a === "Sans catégorie") return 1;
-    if (b === "Sans catégorie") return -1;
-
-    // 2) Ensuite, gestion des catégories prioritaires
-    const iA = desiredOrder.indexOf(a);
-    const iB = desiredOrder.indexOf(b);
-    if (iA >= 0 || iB >= 0) {
-      // ceux qui ne sont pas trouvés sont traités comme Infinity
-      return (iA === -1 ? Infinity : iA) - (iB === -1 ? Infinity : iB);
-    }
-
-    // 3) Enfin, alphabétique pour le reste
-    return a.localeCompare(b, "fr");
-  });
-
-  const base = import.meta.env.VITE_API_URL ?? "";
+  // Récupère la liste des noms de catégories parentes
+  const parentNames = Object.keys(eventsByParent);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -56,6 +48,7 @@ const Home = () => {
         <h1 className="text-5xl font-extrabold text-gray-800">Bienvenue !</h1>
       </header>
 
+      {/* Pour chaque nom de parent, on crée une section */}
       <main className="max-w-6xl mx-auto space-y-12">
         {parentNames.map((parent) => (
           <section key={parent}>
@@ -63,6 +56,7 @@ const Home = () => {
               {parent}
             </h2>
             <div className="flex gap-6 overflow-x-auto pb-4">
+              {/* Pour chaque événement dans cette catégorie parente */}
               {eventsByParent[parent].map((evt) => (
                 <div
                   key={evt.event_id}
@@ -71,7 +65,7 @@ const Home = () => {
                   <div>
                     {evt.image && (
                       <img
-                        src={`${base}${evt.image}`}
+                        src={`http://localhost:3000${evt.image}`}
                         alt={evt.title}
                         className="w-full h-40 object-cover rounded-t-2xl mb-4"
                       />
