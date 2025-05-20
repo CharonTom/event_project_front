@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
-@font-face {
+/* @font-face {
   font-family: Poppins;
   src: url("../assets/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
-}
+} */
 
 /* On utilise thème pour paramétrer les couleurs, polices, fonts */
 @theme {
   --font-poppins: "Poppins", sans-serif;
-  --color-primary: #ff708f;
-  --color-secondary: #f97316;
-  --color-tertiary: #fbbf24;
+  --color-primary: #56d2d2;
+  --color-secondary: #593ea1;
 }
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
@@ -42,19 +41,22 @@
 
 /* Components permet de stocker le css d'un composant dans une seule propriété */
 @layer components {
-  .btn-pink {
-    @apply bg-primary text-white py-2 px-6 rounded text-xs;
+  .btn-gradient {
+    @apply px-4 py-2 text-white rounded-lg  bg-linear-to-b from-[#56d2d2] from-40% to-[#593ea1];
   }
-
-  .btn-blue {
-    @apply bg-blue-500 text-white py-2 px-3 rounded text-xs;
+  .btn-gradient-border {
+    @apply px-4 py-2 text-gray-900 rounded-lg border-2 border-transparent;
+    background-image: linear-gradient(#ffffff, #ffffff),
+      linear-gradient(to bottom, #56d2d2 40%, #593ea1);
+    /* Fond blanc serre le contenu, puis le dégradé couvre la bordure */
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
   }
-
-  .btn-red {
-    @apply bg-[#B1202E] text-white py-2 px-6 rounded text-xs;
-  }
-  .btn-green {
-    @apply bg-[#198754] text-white py-2 px-6 rounded text-xs;
+  .text-gradient {
+    @apply bg-linear-to-b from-[#56d2d2] from-40% to-[#593ea1];
+    /* clip et transparence pour le texte */
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 

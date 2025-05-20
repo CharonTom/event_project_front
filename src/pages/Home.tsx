@@ -45,7 +45,11 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <header className="max-w-4xl mx-auto mb-8 text-center">
-        <h1 className="text-5xl font-extrabold text-gray-800">Bienvenue !</h1>
+        <h1 className="text-5xl text-gradient">Bienvenue</h1>
+        <button className="btn-gradient">bg gradient</button>
+        <button className="btn-gradient-border">
+          <span className="text-gradient"> border gradient</span>
+        </button>
       </header>
 
       {/* Pour chaque nom de parent, on crée une section */}

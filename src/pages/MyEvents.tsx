@@ -119,7 +119,7 @@ export default function Events() {
                     {ev.categories.map((cat) => (
                       <span
                         key={cat.category_id}
-                        className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                        className="text-xs bg-gradient-to-b from-[#56d2d2]  to-[#593ea1] inline-block text-transparent bg-clip-text px-2 py-1 rounded-full border border-gray-300"
                       >
                         {cat.name}
                       </span>
