@@ -36,6 +36,7 @@ export default function CalendarPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const fetchEvents = () => {
     if (!token) return;
@@ -52,7 +53,7 @@ export default function CalendarPage() {
     }
 
     axios
-      .get<UserProfile>(`http://localhost:3000/users/${payload.id}`, {
+      .get<UserProfile>(`${BASE_URL}/users/${payload.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEvents(res.data.calendar.events))
@@ -85,7 +86,7 @@ export default function CalendarPage() {
     try {
       const payload = jwtDecode<JWTPayload>(token!);
       await axios.delete(
-        `http://localhost:3000/users/${payload.id}/calendar/events/${eventId}`,
+        `${BASE_URL}/users/${payload.id}/calendar/events/${eventId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchEvents();

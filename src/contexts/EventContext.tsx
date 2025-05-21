@@ -35,6 +35,7 @@ interface EventContextType {
 
 // Création du contexte avec une valeur par défaut typée.
 export const EventContext = createContext<EventContextType>({ events: [] });
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 // 5. Composant provider typé.
 export const EventProvider: React.FC<{ children: ReactNode }> = ({
@@ -45,7 +46,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     // 6. On précise à axios le type de la réponse.
     axios
-      .get<Event[]>("http://localhost:3000/events")
+      .get<Event[]>(`${BASE_URL}/events`)
       .then((response) => setEvents(response.data))
       .catch((err) =>
         console.error("Erreur lors du fetch des événements :", err)

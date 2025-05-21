@@ -11,6 +11,7 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const { setToken } = useAuth();
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post<{ access_token: string }>(
-        "http://localhost:3000/auth/register",
+        `${BASE_URL}/auth/register`,
         {
           first_name: firstName,
           last_name: lastName,

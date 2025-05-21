@@ -11,12 +11,14 @@ const Login: React.FC = () => {
   const { setToken } = useAuth();
   const navigate = useNavigate();
 
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       // Adapte l'URL selon ton API NestJS
       const response = await axios.post<{ access_token: string }>(
-        "http://localhost:3000/auth/login",
+        `${BASE_URL}/auth/login`,
         {
           email,
           password,

@@ -30,10 +30,12 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
   // Charge les catégories disponibles
   useEffect(() => {
     axios
-      .get<Category[]>("http://localhost:3000/categories")
+      .get<Category[]>(`${BASE_URL}/categories`)
       .then((res) => setCategories(res.data))
       .catch((err) =>
         console.error("Impossible de charger les catégories", err)
@@ -62,7 +64,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: Props) {
     }
 
     try {
-      await axios.post("http://localhost:3000/events", formData, {
+      await axios.post(`${BASE_URL}/events`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           // Ne pas fixer manuellement content-type ici

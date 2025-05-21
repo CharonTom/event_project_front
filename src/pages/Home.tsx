@@ -7,6 +7,8 @@ const Home = () => {
   const { events } = useContext(EventContext);
   console.log(events);
 
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
   // formate une date ISO en chaîne au format français
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", {
@@ -69,7 +71,7 @@ const Home = () => {
                   <div>
                     {evt.image && (
                       <img
-                        src={`http://localhost:3000${evt.image}`}
+                        src={`${BASE_URL}${evt.image}`}
                         alt={evt.title}
                         className="w-full h-40 object-cover rounded-t-2xl mb-4"
                       />

@@ -36,7 +36,7 @@ const Details = () => {
   const { id } = useParams<{ id: string }>();
   const eventId = Number(id);
   const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
-  console.log(evt?.event_id);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   if (!evt) {
     // ici, evt est forcément undefined
@@ -65,7 +65,7 @@ const Details = () => {
     ) {
       try {
         await axios.post(
-          `http://localhost:3000/users/${userId}/calendar/events`,
+          `${BASE_URL}/${userId}/calendar/events`,
           {
             event_id: evt.event_id,
             wants_reminder: true,
@@ -95,7 +95,7 @@ const Details = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <img src={`http://localhost:3000${evt.image}`} />
+      <img src={`${BASE_URL}${evt.image}`} />
       <h1 className="text-4xl font-extrabold">{evt.title}</h1>
       <div>
         <div className="flex items-center gap-x-4">

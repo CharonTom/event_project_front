@@ -32,6 +32,7 @@ export default function Events() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const fetchMyEvents = useCallback(async () => {
     if (!token) return;
@@ -49,7 +50,7 @@ export default function Events() {
 
     try {
       const { data } = await axios.get<EventItem[]>(
-        `http://localhost:3000/users/${payload.id}/events`,
+        `${BASE_URL}/users/${payload.id}/events`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEvents(data);
@@ -71,7 +72,7 @@ export default function Events() {
     if (!window.confirm("Voulez-vous vraiment supprimer cet événement ?"))
       return;
     try {
-      await axios.delete(`http://localhost:3000/events/${id}`, {
+      await axios.delete(`${BASE_URL}/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMyEvents();
@@ -102,7 +103,7 @@ export default function Events() {
               {/* Image */}
               {ev.image && (
                 <img
-                  src={`http://localhost:3000${ev.image}`}
+                  src={`${BASE_URL}${ev.image}`}
                   alt={ev.title}
                   className="w-full h-48 sm:w-48 sm:h-32 object-cover rounded-lg mb-4 sm:mb-0"
                 />

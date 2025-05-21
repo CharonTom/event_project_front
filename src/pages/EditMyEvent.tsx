@@ -39,11 +39,12 @@ export default function EditMyEvent() {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   // Charger catégories
   useEffect(() => {
     axios
-      .get<Category[]>("http://localhost:3000/categories")
+      .get<Category[]>(`${BASE_URL}/categories`)
       .then((res) => setCategories(res.data))
       .catch((err) => console.error("Erreur chargement catégories", err));
   }, []);
@@ -55,7 +56,7 @@ export default function EditMyEvent() {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get(`http://localhost:3000/events/${id}`, {
+        const res = await axios.get(`${BASE_URL}/events/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = res.data;
@@ -126,7 +127,7 @@ export default function EditMyEvent() {
     if (form.image) formData.append("image", form.image);
 
     try {
-      await axios.patch(`http://localhost:3000/events/${id}`, formData, {
+      await axios.patch(`${BASE_URL}/events/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           // Let browser set Content-Type

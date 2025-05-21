@@ -33,6 +33,7 @@ export default function EditAccount() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
     if (!token) {
@@ -50,7 +51,7 @@ export default function EditAccount() {
     }
 
     axios
-      .get<UserProfile>(`http://localhost:3000/users/${payload.id}`, {
+      .get<UserProfile>(`${BASE_URL}/users/${payload.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -86,7 +87,7 @@ export default function EditAccount() {
     }
 
     try {
-      await axios.patch(`http://localhost:3000/users/${userId}`, payload, {
+      await axios.patch(`${BASE_URL}/users/${userId}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/account", { replace: true });

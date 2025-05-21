@@ -31,6 +31,7 @@ export default function Account() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const fetchProfile = useCallback(async () => {
     if (!token) return;
@@ -49,7 +50,7 @@ export default function Account() {
 
     try {
       const { data } = await axios.get<UserProfile>(
-        `http://localhost:3000/users/${payload.id}`,
+        `${BASE_URL}/users/${payload.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(data);
@@ -86,7 +87,7 @@ export default function Account() {
       return;
 
     try {
-      await axios.delete(`http://localhost:3000/users/${user?.user_id}`, {
+      await axios.delete(`${BASE_URL}/users/${user?.user_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/logout", { replace: true });
