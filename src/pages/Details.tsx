@@ -65,7 +65,7 @@ const Details = () => {
     ) {
       try {
         await axios.post(
-          `${BASE_URL}/${userId}/calendar/events`,
+          `${BASE_URL}/users/${userId}/calendar/events`,
           {
             event_id: evt.event_id,
             wants_reminder: true,
