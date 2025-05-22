@@ -12,14 +12,13 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // ← état pour le mot de passe
-
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const { setToken } = useAuth();
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -37,10 +36,8 @@ const Register: React.FC = () => {
           password,
         }
       );
-      // l'API retourne directement access_token
       setToken(response.data.access_token);
       navigate("/account", { replace: true });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Erreur lors de l’enregistrement"
@@ -51,18 +48,14 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex-center bg-[#F7F8FA]">
-      <div className="">
-        <h1 className="text-[32px] font-bold text-gray-900 mb-8">
-          Créez votre <br />
-          compte
-        </h1>
+    <section className="min-h-screen flex-center bg-[#F7F8FA]">
+      <div className="w-[75%]">
+        <h1 className="text-[32px] font-bold">Créez votre compte</h1>
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-        <div className="flex-center flex-col gap-y-4 w-full">
-          <form
-            className="w-full mt-4 flex-center flex-col gap-y-4"
-            onSubmit={handleSubmit}
-          >
+
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md space-y-4">
+            {/* Prénom */}
             <div className="flex-center bg-white p-2 rounded">
               <CiUser className="m-2 text-2xl" />
               <input
@@ -71,9 +64,10 @@ const Register: React.FC = () => {
                 required
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full rounded px-3 py-2"
+                className="w-full px-3 py-2"
               />
             </div>
+            {/* Nom */}
             <div className="flex-center bg-white p-2 rounded">
               <CiUser className="m-2 text-2xl" />
               <input
@@ -82,10 +76,10 @@ const Register: React.FC = () => {
                 required
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="w-full rounded px-3 py-2"
+                className="w-full px-3 py-2"
               />
             </div>
-
+            {/* Email */}
             <div className="flex-center bg-white p-2 rounded">
               <CiUser className="m-2 text-2xl" />
               <input
@@ -100,6 +94,7 @@ const Register: React.FC = () => {
                 placeholder="Email"
               />
             </div>
+            {/* Téléphone */}
             <div className="flex-center bg-white p-2 rounded">
               <CiUser className="m-2 text-2xl" />
               <input
@@ -108,16 +103,16 @@ const Register: React.FC = () => {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full  rounded px-3 py-2"
+                className="w-full px-3 py-2"
               />
             </div>
-
+            {/* Mot de passe */}
             <div className="flex-center bg-white p-2 rounded">
               <CiLock className="m-2 text-2xl" />
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"} // ← type dynamique
+                type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 required
                 value={password}
@@ -133,25 +128,26 @@ const Register: React.FC = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+          </div>
 
+          <div>
             <button
               type="submit"
               disabled={loading}
-              className="flex-center py-5 px-4 border border-transparent text-sm font-medium rounded-md 
-                       text-white bg-primary w-full"
+              className="w-full flex-center py-4 px-4 text-sm rounded-md text-white bg-primary"
             >
               {loading ? "Inscription…" : "S’inscrire"}
             </button>
-          </form>
-          <p className="mb-16 text-sm text-gray">
-            Vous avez déjà un compte ?{" "}
-            <Link to="/login" className="">
-              Connectez vous
-            </Link>
-          </p>
-        </div>
+            <p className="p-2 text-sm text-gray-500">
+              Vous avez déjà un compte ?{" "}
+              <Link to="/login" className="text-primary underline">
+                Connectez-vous
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
-    </div>
+    </section>
   );
 };
 
