@@ -78,9 +78,11 @@ export default function EditMyEvent() {
           location: data.location || "",
           city: data.city || "",
           price: data.price || 0,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           category_id: data.categories?.map((c: any) => c.category_id) || [],
           image: null,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err.response?.data?.message || "Erreur lors du chargement");
       } finally {
@@ -95,10 +97,12 @@ export default function EditMyEvent() {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { name, value, files, multiple, selectedOptions } = e.target as any;
     if (name === "image" && files) {
       setForm((f) => ({ ...f, image: files[0] }));
     } else if (name === "category_id" && multiple && selectedOptions) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const vals = Array.from(selectedOptions, (opt: any) => +opt.value);
       setForm((f) => ({ ...f, category_id: vals }));
     } else if (name === "price") {
@@ -134,6 +138,7 @@ export default function EditMyEvent() {
         },
       });
       navigate("/my-events");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur lors de la mise à jour");
     } finally {

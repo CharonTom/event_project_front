@@ -25,6 +25,7 @@ const Login: React.FC = () => {
       );
       setToken(response.data.access_token);
       navigate("/account", { replace: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur de connexion");
     }

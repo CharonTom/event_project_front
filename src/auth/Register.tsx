@@ -2,6 +2,9 @@ import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
+import { CiUser } from "react-icons/ci";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { CiLock } from "react-icons/ci";
 
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,6 +12,8 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // ← état pour le mot de passe
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
@@ -58,49 +63,76 @@ const Register: React.FC = () => {
             className="w-full mt-4 flex-center flex-col gap-y-4"
             onSubmit={handleSubmit}
           >
-            <input
-              type="text"
-              placeholder="Prénom"
-              required
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Nom"
-              required
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
+            <div className="flex-center bg-white p-2 rounded">
+              <CiUser className="m-2 text-2xl" />
+              <input
+                type="text"
+                placeholder="Prénom"
+                required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full rounded px-3 py-2"
+              />
+            </div>
+            <div className="flex-center bg-white p-2 rounded">
+              <CiUser className="m-2 text-2xl" />
+              <input
+                type="text"
+                placeholder="Nom"
+                required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full rounded px-3 py-2"
+              />
+            </div>
 
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
+            <div className="flex-center bg-white p-2 rounded">
+              <CiUser className="m-2 text-2xl" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2"
+                placeholder="Email"
+              />
+            </div>
+            <div className="flex-center bg-white p-2 rounded">
+              <CiUser className="m-2 text-2xl" />
+              <input
+                type="tel"
+                placeholder="Téléphone"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full  rounded px-3 py-2"
+              />
+            </div>
 
-            <input
-              type="tel"
-              placeholder="Téléphone"
-              required
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
-
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
+            <div className="flex-center bg-white p-2 rounded">
+              <CiLock className="m-2 text-2xl" />
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"} // ← type dynamique
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2"
+                placeholder="Mot de passe"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="m-2 text-2xl focus:outline-none"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
 
             <button
               type="submit"

@@ -54,6 +54,7 @@ export default function Events() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEvents(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -76,6 +77,7 @@ export default function Events() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMyEvents();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(
         err.response?.data?.message ||
