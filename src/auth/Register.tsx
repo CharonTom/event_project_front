@@ -46,22 +46,25 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center text-gray-900">
-          Inscription
+    <div className="min-h-screen flex-center bg-[#F7F8FA]">
+      <div className=" ">
+        <h1 className="text-[32px] font-bold text-gray-900 mb-8">
+          Créez votre <br />
+          compte
         </h1>
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
+        <div className="flex-center flex-col gap-y-4 w-full">
+          <form
+            className="w-full mt-4 flex-center flex-col gap-y-4"
+            onSubmit={handleSubmit}
+          >
             <input
               type="text"
               placeholder="Prénom"
               required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2"
             />
             <input
               type="text"
@@ -69,55 +72,52 @@ const Register: React.FC = () => {
               required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2"
             />
-          </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          />
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            />
 
-          <input
-            type="tel"
-            placeholder="Téléphone"
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          />
+            <input
+              type="tel"
+              placeholder="Téléphone"
+              required
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            />
 
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          />
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md 
-                       text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            {loading ? "Inscription…" : "S’inscrire"}
-          </button>
-        </form>
-        <p className="p-2">
-          Déjà inscrit ?{" "}
-          <Link
-            to="/login"
-            className="text-indigo-600 hover:text-indigo-800 font-medium"
-          >
-            Connectez vous ici
-          </Link>
-        </p>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-center py-5 px-4 border border-transparent text-sm font-medium rounded-md 
+                       text-white bg-primary w-full"
+            >
+              {loading ? "Inscription…" : "S’inscrire"}
+            </button>
+          </form>
+          <p className="mt-16 text-sm text-gray">
+            Vous avez déjà un compte ?{" "}
+            <Link to="/login" className="">
+              Connectez vous
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

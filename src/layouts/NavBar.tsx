@@ -1,25 +1,29 @@
 import { NavLink } from "react-router-dom";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 
 export default function Navbar() {
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? "text-blue-700 font-semibold border-b-2 border-blue-700 transition-colors"
-      : "text-blue-600 hover:text-blue-800 transition-colors";
+      ? "text-blue-400 font-semibold border-b-2 border-blue-700 transition-colors"
+      : "text-white hover:text-blue-800 transition-colors";
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-gray-100 shadow py-6 px-4 flex justify-center z-50">
+    <div className="fixed bottom-0 left-0 w-full bg-black shadow py-4 px-4 flex justify-center z-50">
       <nav className="flex gap-x-8">
         <NavLink to="/" className={linkClasses}>
-          Home
+          <FaHome className="text-2xl" />
         </NavLink>
         <NavLink to="/explore" className={linkClasses}>
-          Explore
+          <FaSearch className="text-2xl" />
         </NavLink>
         <NavLink to="/account" className={linkClasses}>
-          Profil
+          <FaUser className="text-2xl" />
         </NavLink>
         <NavLink to="/calendar" className={linkClasses}>
-          Agenda
+          <FaRegCalendarAlt className="text-2xl" />
         </NavLink>
       </nav>
     </div>

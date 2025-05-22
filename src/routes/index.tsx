@@ -14,6 +14,7 @@ import CreateEvent from "../pages/CreateEvent";
 import Calendar from "../pages/Calendar";
 import MyEvents from "../pages/MyEvents";
 import EditMyEvent from "../pages/EditMyEvent";
+import ChoicePage from "../auth/ChoicePage";
 
 const AppRoutes = () => (
   <Routes>
@@ -23,6 +24,7 @@ const AppRoutes = () => (
       <Route path="details/:id" element={<Details />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="connection-gate" element={<ChoicePage />} />
 
       {/* protégées */}
       <Route element={<PrivateRoute />}>

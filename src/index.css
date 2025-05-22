@@ -10,6 +10,7 @@
   --font-poppins: "Poppins", sans-serif;
   --color-primary: #56d2d2;
   --color-secondary: #593ea1;
+  --color-gray: #acadb9;
 }
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
@@ -18,11 +19,11 @@
     @apply font-poppins text-[16px];
   }
 
-  section {
+  /* section {
     @apply mb-16;
-  }
+  } */
 
-  h1 {
+  /* h1 {
     @apply text-[42px] font-semibold py-[25px];
   }
 
@@ -36,7 +37,7 @@
 
   a {
     @apply cursor-pointer;
-  }
+  } */
 }
 
 /* Components permet de stocker le css d'un composant dans une seule propriété */
