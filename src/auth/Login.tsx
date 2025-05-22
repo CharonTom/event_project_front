@@ -2,6 +2,10 @@ import React, { useState, FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
+import { CiUser } from "react-icons/ci";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { CiLock } from "react-icons/ci";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -33,65 +37,70 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex-center flex-col">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Connectez vous à votre compte
-      </h1>
-      {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-        <div className="rounded-md shadow-sm -space-y-px">
-          <div className="mb-4">
-            <label htmlFor="email" className="sr-only">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Email"
-            />
+    <section className="min-h-screen flex-center bg-[#F7F8FA]">
+      <div className="w-[75%]">
+        <h1 className="text-[32px] font-bold">Connectez vous à votre compte</h1>
+        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md">
+            <div className="mb-4">
+              <div className="flex-center bg-white p-2">
+                <CiUser className="m-2 text-2xl" />
+                <label htmlFor="email" className="sr-only">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2"
+                  placeholder="Email"
+                />
+                <div></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex-center bg-white p-2">
+                <CiLock className="m-2 text-2xl" />
+                <label htmlFor="password" className="sr-only">
+                  Mot de passe
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="rounded  w-full px-3 py-2"
+                  placeholder="Mot de passe"
+                />
+                <FaEye className="text-2xl m-2" />
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="password" className="sr-only">
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Mot de passe"
-            />
-          </div>
-        </div>
 
-        <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Se connecter
-          </button>
-          <p className="p-2">
-            Pas encore inscrit ?{" "}
-            <Link
-              to="/register"
-              className="text-indigo-600 hover:text-indigo-800 font-medium"
+          <div>
+            <button
+              type="submit"
+              className="w-full flex-center py-4 px-4 text-sm rounded-md text-white bg-primary"
             >
-              Inscrivez vous ici
-            </Link>
-          </p>
-        </div>
-      </form>
+              Se connecter
+            </button>
+            <p className="p-2 text-sm text-gray-500">
+              Pas encore inscrit ?{" "}
+              <Link to="/register" className="">
+                Inscrivez vous ici
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
     </section>
   );
 };

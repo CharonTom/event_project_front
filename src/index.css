@@ -19,9 +19,13 @@
     @apply font-poppins text-[16px];
   }
 
-  /* section {
-    @apply mb-16;
-  } */
+  section {
+    @apply p-4;
+  }
+
+  input {
+    @apply outline-none;
+  }
 
   /* h1 {
     @apply text-[42px] font-semibold py-[25px];

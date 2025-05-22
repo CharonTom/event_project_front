@@ -47,7 +47,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex-center bg-[#F7F8FA]">
-      <div className=" ">
+      <div className="">
         <h1 className="text-[32px] font-bold text-gray-900 mb-8">
           Créez votre <br />
           compte
@@ -111,7 +111,7 @@ const Register: React.FC = () => {
               {loading ? "Inscription…" : "S’inscrire"}
             </button>
           </form>
-          <p className="mt-16 text-sm text-gray">
+          <p className="mb-16 text-sm text-gray">
             Vous avez déjà un compte ?{" "}
             <Link to="/login" className="">
               Connectez vous

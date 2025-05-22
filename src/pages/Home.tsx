@@ -27,9 +27,9 @@ const Home: React.FC = () => {
   const parentNames = Object.keys(eventsByParent);
 
   return (
-    <section className="max-w-6xl mx-auto space-y-12">
+    <section className=" bg-[#F3F3F3]">
       {parentNames.map((parent) => (
-        <section key={parent}>
+        <div key={parent}>
           <h2 className="text-sm font-semibold text-gray-800 mb-4">{parent}</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {eventsByParent[parent].map((evt) => (
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
               />
             ))}
           </div>
-        </section>
+        </div>
       ))}
     </section>
   );

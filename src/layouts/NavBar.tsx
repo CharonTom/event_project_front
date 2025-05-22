@@ -7,7 +7,7 @@ import { FaHome } from "react-icons/fa";
 export default function Navbar() {
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? "text-blue-400 font-semibold border-b-2 border-blue-700 transition-colors"
+      ? "text-blue-400 font-semibold transition-colors"
       : "text-white hover:text-blue-800 transition-colors";
 
   return (
