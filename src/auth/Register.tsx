@@ -48,8 +48,14 @@ const Register: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex-center bg-[#F7F8FA]">
+    <section className="min-h-screen flex-center bg-[#F7F8FA] py-30">
       <div className="w-[75%]">
+        <div
+          onClick={() => navigate("/connection-gate")}
+          className="flex-center absolute top-12 left-12 bg-white h-12 w-12 rounded-xl"
+        >
+          <span className="text-3xl text-gradient">&lsaquo;</span>
+        </div>
         <h1 className="text-[32px] font-bold">Créez votre compte</h1>
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
 
@@ -134,18 +140,18 @@ const Register: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex-center py-4 px-4 text-sm rounded-md text-white bg-primary"
+              className="btn-primary w-full"
             >
               {loading ? "Inscription…" : "S’inscrire"}
             </button>
-            <p className="p-2 text-sm text-gray-500">
-              Vous avez déjà un compte ?{" "}
-              <Link to="/login" className="text-primary underline">
-                Connectez-vous
-              </Link>
-            </p>
           </div>
         </form>
+        <p className="p-2 text-xs text-gray-500">
+          Vous avez déjà un compte ?{" "}
+          <Link to="/login" className="text-primary underline">
+            Connectez-vous
+          </Link>
+        </p>
       </div>
     </section>
   );

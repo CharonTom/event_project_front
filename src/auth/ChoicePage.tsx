@@ -10,13 +10,13 @@ function ChoicePage() {
         <div className="flex flex-col flex-center gap-4 w-full">
           <button
             onClick={() => navigate("/login")}
-            className="px-4 py-2 bg-secondary text-white rounded w-[80%]"
+            className="btn-secondary w-[80%]"
           >
             Log in
           </button>
           <button
             onClick={() => navigate("/register")}
-            className="px-4 py-2 bg-primary hover:bg-gray-300 text-white rounded w-[80%]"
+            className="btn-primary w-[80%]"
           >
             Sign up
           </button>

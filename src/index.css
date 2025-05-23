@@ -10,7 +10,9 @@
   --font-poppins: "Poppins", sans-serif;
   --color-primary: #56d2d2;
   --color-secondary: #593ea1;
-  --color-gray: #acadb9;
+  --color-grey-bg: #f3f3f3;
+  --color-grey-text: #acadb9;
+  --color-grey-navbar: #acadb9;
 }
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
@@ -20,43 +22,45 @@
   }
 
   section {
-    @apply p-4;
+    @apply p-4 bg-grey-bg;
   }
 
   input {
     @apply outline-none;
   }
-
-  /* h1 {
-    @apply text-[42px] font-semibold py-[25px];
-  }
-
-  h2 {
-    @apply text-[30px] font-semibold;
-  }
-
-  h3 {
-    @apply text-[20px] font-semibold my-6;
-  }
-
-  a {
-    @apply cursor-pointer;
-  } */
 }
 
 /* Components permet de stocker le css d'un composant dans une seule propriété */
 @layer components {
-  .btn-gradient {
-    @apply px-4 py-2 text-white rounded-lg  bg-linear-to-b from-[#56d2d2] from-40% to-[#593ea1];
+  .btn-primary {
+    @apply p-4 text-white rounded-xl bg-primary;
   }
+
+  .btn-secondary {
+    @apply p-4 text-white rounded-xl  bg-secondary;
+  }
+
+  .btn-gradient {
+    @apply p-3 text-white rounded-2xl bg-linear-to-b from-[#56d2d2] from-40% to-[#593ea1];
+  }
+
   .btn-gradient-border {
-    @apply px-4 py-2 text-gray-900 rounded-lg border-2 border-transparent;
+    @apply p-4 text-gray-900 rounded-xl border-2 border-transparent;
+    background-image: linear-gradient(#f3f3f3, #f3f3f3),
+      linear-gradient(to bottom, #56d2d2 40%, #593ea1);
+    /* Fond blanc serre le contenu, puis le dégradé couvre la bordure */
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+  }
+  .tag-gradient-border {
+    @apply py-2 px-3 rounded-2xl border-1 border-transparent;
     background-image: linear-gradient(#ffffff, #ffffff),
       linear-gradient(to bottom, #56d2d2 40%, #593ea1);
     /* Fond blanc serre le contenu, puis le dégradé couvre la bordure */
     background-origin: padding-box, border-box;
     background-clip: padding-box, border-box;
   }
+
   .text-gradient {
     @apply bg-linear-to-b from-[#56d2d2] from-40% to-[#593ea1];
     /* clip et transparence pour le texte */

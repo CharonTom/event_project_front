@@ -2,6 +2,9 @@
 import { useContext } from "react";
 import { EventContext, Event } from "../contexts/EventContext";
 import EventHomeCard from "../components/EventHomeCard";
+import TodayHomeCard from "../components/TodayHomeCard";
+import Logo from "../assets/logo-evently.png";
+import HomeBanner from "../components/HomeBanner";
 
 const Home: React.FC = () => {
   const { events } = useContext(EventContext);
@@ -27,10 +30,12 @@ const Home: React.FC = () => {
   const parentNames = Object.keys(eventsByParent);
 
   return (
-    <section className=" bg-[#F3F3F3]">
+    <section className="pb-20">
+      <img className="w-32 " src={Logo} alt="Logo de l'application"></img>
+      <TodayHomeCard />
       {parentNames.map((parent) => (
         <div key={parent}>
-          <h2 className="text-sm font-semibold text-gray-800 mb-4">{parent}</h2>
+          <h2 className="text-sm font-semibold text-gray-800">{parent}</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {eventsByParent[parent].map((evt) => (
               <EventHomeCard
@@ -42,6 +47,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       ))}
+      <HomeBanner />
     </section>
   );
 };

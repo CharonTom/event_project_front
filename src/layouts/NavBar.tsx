@@ -7,11 +7,11 @@ import { FaHome } from "react-icons/fa";
 export default function Navbar() {
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? "text-blue-400 font-semibold transition-colors"
-      : "text-white hover:text-blue-800 transition-colors";
+      ? "text-primary font-semibold transition-colors"
+      : "text-grey-text hover:text-blue-800 transition-colors";
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-black shadow py-4 px-4 flex justify-center z-50">
+    <div className="fixed bottom-0 left-0 w-full bg-grey-bg shadow py-4 px-4 flex justify-center z-50">
       <nav className="flex gap-x-8">
         <NavLink to="/" className={linkClasses}>
           <FaHome className="text-2xl" />

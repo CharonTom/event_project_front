@@ -5,6 +5,7 @@ import axios from "axios";
 import { CiUser } from "react-icons/ci";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
+import { TbChevronLeft } from "react-icons/tb";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -32,13 +33,20 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex-center bg-[#F7F8FA]">
-      <div className="w-[75%]">
+    <section className="min-h-screen flex-center bg-[#F7F8FA] relative">
+      <div className="w-[75%] ">
+        <div
+          onClick={() => navigate("/connection-gate")}
+          className="flex-center absolute top-16 left-12 bg-white h-12 w-12 rounded-xl"
+        >
+          <span className="text-3xl text-gradient">&lsaquo;</span>
+        </div>
+
         <h1 className="text-[32px] font-bold">Connectez vous à votre compte</h1>
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md space-y-4">
-            {/* Champ email inchangé */}
+            {/* Email input element*/}
             <div className="flex-center bg-white p-2 rounded">
               <CiUser className="m-2 text-2xl" />
               <input
@@ -54,7 +62,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Champ mot de passe avec toggle */}
+            {/* password input */}
             <div className="flex-center bg-white p-2 rounded">
               <CiLock className="m-2 text-2xl" />
               <input
@@ -77,22 +85,18 @@ const Login: React.FC = () => {
               </button>
             </div>
           </div>
-
           <div>
-            <button
-              type="submit"
-              className="w-full flex-center py-4 px-4 text-sm rounded-md text-white bg-primary"
-            >
+            <button type="submit" className="btn-primary w-full">
               Se connecter
             </button>
-            <p className="p-2 text-sm text-gray-500">
-              Pas encore inscrit ?{" "}
-              <Link to="/register" className="text-primary underline">
-                Inscrivez-vous ici
-              </Link>
-            </p>
           </div>
         </form>
+        <p className="mt-12 text-xs text-gray-500">
+          Pas encore inscrit ?{" "}
+          <Link to="/register" className="text-primary underline">
+            Inscrivez-vous ici
+          </Link>
+        </p>
       </div>
     </section>
   );
