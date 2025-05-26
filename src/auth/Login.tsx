@@ -10,7 +10,7 @@ import { CiLock } from "react-icons/ci";
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // ← état pour le mot de passe
+  const [showPassword, setShowPassword] = useState(false); //  état pour le mot de passe
   const [error, setError] = useState<string | null>(null);
 
   const { setToken } = useAuth();
