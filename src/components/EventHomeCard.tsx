@@ -9,7 +9,7 @@ interface EventHomeCardProps {
 } // src/components/EventHomeCard.tsx
 
 const EventHomeCard: React.FC<EventHomeCardProps> = ({ event, baseUrl }) => {
-  // formate une date ISO en chaîne au format français
+  // formate une date ISO en chaîne au format français.
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", {
       day: "2-digit",
