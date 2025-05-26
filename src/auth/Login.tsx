@@ -5,7 +5,7 @@ import axios from "axios";
 import { CiUser } from "react-icons/ci";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
-import { TbChevronLeft } from "react-icons/tb";
+// import { TbChevronLeft } from "react-icons/tb";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");

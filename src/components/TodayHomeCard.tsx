@@ -1,6 +1,6 @@
 import TodayBanner from "../assets/today-banner.png";
-import { TbChevronLeft } from "react-icons/tb";
-import { TbChevronRight } from "react-icons/tb";
+// import { TbChevronLeft } from "react-icons/tb";
+// import { TbChevronRight } from "react-icons/tb";
 
 function TodayHomeCard() {
   return (
