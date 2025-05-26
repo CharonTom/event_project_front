@@ -1,12 +1,13 @@
 // src/pages/Home.tsx
 import { useContext } from "react";
-import { EventContext, Event } from "../contexts/EventContext";
+import { EventContext } from "../contexts/EventContext";
 import EventHomeCard from "../components/EventHomeCard";
 import TodayHomeCard from "../components/TodayHomeCard";
 import Logo from "../assets/logo-evently.png";
 import HomeBanner from "../components/HomeBanner";
+import type { Event } from "../types/types";
 
-const Home: React.FC = () => {
+const Home = () => {
   const { events } = useContext(EventContext);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 

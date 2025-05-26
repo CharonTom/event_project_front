@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
-/* @font-face {
+@font-face {
   font-family: Poppins;
   src: url("../assets/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
-} */
+  font-family: Roboto;
+  src: url("../assets/fonts/Roboto/static/Roboto-Regular.ttf")
+    format("truetype");
+}
 
 /* On utilise thème pour paramétrer les couleurs, polices, fonts */
 @theme {
   --font-poppins: "Poppins", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
   --color-primary: #56d2d2;
   --color-secondary: #593ea1;
   --color-grey-bg: #f3f3f3;
@@ -17,9 +21,9 @@
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
 @layer base {
-  body {
+  /* body {
     @apply font-poppins text-[16px];
-  }
+  } */
 
   section {
     @apply p-4 bg-grey-bg;

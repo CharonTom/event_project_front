@@ -2,23 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
-
-interface Category {
-  category_id: number;
-  name: string;
-}
-
-interface EventForm {
-  title: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  location: string;
-  city: string;
-  price: number;
-  category_id: number[];
-  image?: File | null;
-}
+import type { Category, EventForm } from "../types/types";
 
 export default function EditMyEvent() {
   const { token } = useAuth();

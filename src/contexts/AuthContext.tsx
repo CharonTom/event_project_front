@@ -8,11 +8,7 @@ import React, {
   ReactNode,
 } from "react";
 import axios from "axios";
-
-interface AuthContextType {
-  token: string | null;
-  setToken: (token: string | null) => void;
-}
+import type { AuthContextType } from "../types/types";
 
 // On initialise le contexte à `undefined` pour forcer le check dans useAuth()
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

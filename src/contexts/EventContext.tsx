@@ -1,37 +1,7 @@
 // src/contexts/EventContext.tsx
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import axios from "axios";
-
-export interface Category {
-  category_id: number;
-  name: string;
-  parent?: {
-    category_id: number;
-    name: string;
-  };
-}
-
-export interface Event {
-  event_id: number;
-  title: string;
-  date: string;
-  location: string;
-  city: string;
-  start_date: string;
-  end_date: string;
-  price: string;
-  description: string;
-  is_premium: boolean;
-  image?: string;
-  categories?: Category[];
-
-  // à faire évoluer
-}
-
-// Type du contexte : un tableau d’Event.
-interface EventContextType {
-  events: Event[];
-}
+import type { Event, EventContextType } from "../types/types";
 
 // Création du contexte avec une valeur par défaut typée.
 export const EventContext = createContext<EventContextType>({ events: [] });

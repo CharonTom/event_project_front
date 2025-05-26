@@ -4,22 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-
-interface JWTPayload {
-  id: number;
-  email: string;
-  role: string;
-  iat: number;
-  exp: number;
-}
-
-interface UserProfile {
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-}
+import type { JWTPayload, UserProfile } from "../types/types";
 
 export default function EditAccount() {
   const { token } = useAuth();

@@ -3,26 +3,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
+import type { JWTPayload, UserProfile } from "../types/types";
+
 import axios from "axios";
-
-interface UserProfile {
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  role: string;
-  created_at: string;
-  updated_at: string | null;
-}
-
-interface JWTPayload {
-  id: number;
-  email: string;
-  role: string;
-  iat: number;
-  exp: number;
-}
 
 export default function Account() {
   const { token } = useAuth();

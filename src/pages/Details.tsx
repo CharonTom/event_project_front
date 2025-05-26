@@ -5,29 +5,7 @@ import { EventContext } from "../contexts/EventContext";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-
-export interface Event {
-  event_id: number;
-  title: string;
-  date: string;
-  location: string;
-  city: string;
-  start_date: string;
-  end_date: string;
-  price: string;
-  description: string;
-  is_premium: boolean;
-  image?: string;
-  // à faire évoluer
-}
-
-interface JWTPayload {
-  id: number;
-  email: string;
-  role: string;
-  iat: number;
-  exp: number;
-}
+import type { Event, JWTPayload } from "../types/types";
 
 const Details = () => {
   const { token } = useAuth();
@@ -35,8 +13,8 @@ const Details = () => {
   const { events } = useContext(EventContext);
   const { id } = useParams<{ id: string }>();
   const eventId = Number(id);
-  const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
+  const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
 
   if (!evt) {
     // ici, evt est forcément undefined

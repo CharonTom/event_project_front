@@ -2,18 +2,9 @@
 import { useState, useEffect, FormEvent } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import type { Category, CEFProps } from "../types/types";
 
-interface Category {
-  category_id: number;
-  name: string;
-}
-
-interface Props {
-  onSuccess: () => void;
-  onCancel: () => void;
-}
-
-export default function CreateEventForm({ onSuccess, onCancel }: Props) {
+export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
   const { token } = useAuth();
 
   const [title, setTitle] = useState("");

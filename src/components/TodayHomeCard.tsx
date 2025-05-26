@@ -19,7 +19,7 @@ function TodayHomeCard() {
           <TbChevronRight />
         </div> */}
       </div>
-      <h1 className="my-4 font-bold">
+      <h1 className="my-4 font-bold font-roboto">
         Hard Queens : Shockwave <br /> (Fête De La Musique)
       </h1>
     </div>

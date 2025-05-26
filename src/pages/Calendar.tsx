@@ -3,33 +3,7 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-
-interface CalendarEvent {
-  calendar_event_id: number;
-  added_at: string;
-  wants_reminder: boolean;
-  reminder_7d_sent: boolean;
-  reminder_7d_sent_at: string | null;
-  reminder_1d_sent: boolean;
-  reminder_1d_sent_at: string | null;
-  event: {
-    event_id: number;
-    title: string;
-    description: string;
-    start_date: string;
-  };
-}
-
-interface UserProfile {
-  user_id: number;
-  calendar: { calendar_id: number; events: CalendarEvent[] };
-}
-
-interface JWTPayload {
-  id: number;
-  iat: number;
-  exp: number;
-}
+import type { CalendarEvent, UserProfile, JWTPayload } from "../types/types";
 
 export default function CalendarPage() {
   const { token } = useAuth();

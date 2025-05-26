@@ -4,32 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-
-interface Category {
-  category_id: number;
-  name: string;
-}
-
-interface EventItem {
-  event_id: number;
-  title: string;
-  description: string;
-  start_date: string;
-  image: string | null;
-  categories: Category[];
-}
-
-interface JWTPayload {
-  id: number;
-  iat: number;
-  exp: number;
-}
+import type { JWTPayload, Event } from "../types/types";
 
 export default function Events() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  const [events, setEvents] = useState<EventItem[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
@@ -49,7 +30,7 @@ export default function Events() {
     }
 
     try {
-      const { data } = await axios.get<EventItem[]>(
+      const { data } = await axios.get<Event[]>(
         `${BASE_URL}/users/${payload.id}/events`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -119,7 +100,7 @@ export default function Events() {
                   {ev.description && <p className="mb-2">{ev.description}</p>}
                   {/* Catégories */}
                   <div className="flex flex-wrap gap-2">
-                    {ev.categories.map((cat) => (
+                    {ev.categories?.map((cat) => (
                       <span
                         key={cat.category_id}
                         className="text-xs bg-gradient-to-b from-[#56d2d2]  to-[#593ea1] inline-block text-transparent bg-clip-text px-2 py-1 rounded-full border border-gray-300"

@@ -1,14 +1,10 @@
 // src/components/EventHomeCard.tsx
 import { Link } from "react-router-dom";
-import { Event } from "../contexts/EventContext";
+// import { Event } from "../contexts/EventContext";
 import { FaBookmark } from "react-icons/fa6";
+import type { EventHomeCardProps } from "../types/types";
 
-interface EventHomeCardProps {
-  event: Event;
-  baseUrl: string;
-} // src/components/EventHomeCard.tsx
-
-const EventHomeCard: React.FC<EventHomeCardProps> = ({ event, baseUrl }) => {
+const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
   // formate une date ISO en chaîne au format français.
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("fr-FR", {
