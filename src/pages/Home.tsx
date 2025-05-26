@@ -32,7 +32,7 @@ const Home = () => {
 
   return (
     <section className="pb-20">
-      <img className="w-32 " src={Logo} alt="Logo de l'application"></img>
+      <img className="w-32" src={Logo} alt="Logo de l'application"></img>
       <TodayHomeCard />
       {parentNames.map((parent) => (
         <div key={parent}>

@@ -2,9 +2,9 @@ import singer from "../assets/singer-girl.png";
 
 function HomeBanner() {
   return (
-    <div className="my-8 pl-4 pt-6 relative w-full bg-linear-to-t from-[#845def] from-2% to-[#56d2d2] rounded-3xl h-64 text-white">
+    <div className="my-8 pl-4 pt-6 relative w-full overflow-hidden bg-linear-to-t from-[#845def] from-2% to-[#56d2d2] rounded-3xl h-64 text-white">
       <img
-        className="absolute right-0 bottom-0 w-1/2"
+        className="absolute right-0 bottom-0 w-1/2 md:w-1/4 lg:w-[15%]"
         src={singer}
         alt="a singing girl"
       />

@@ -11,7 +11,7 @@ function TodayHomeCard() {
           <TbChevronLeft />
         </div> */}
         <img
-          className="rounded-2xl h-124 object-cover "
+          className="rounded-2xl h-124 object-cover mx-auto"
           src={TodayBanner}
           alt=""
         />

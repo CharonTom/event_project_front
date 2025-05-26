@@ -1,11 +1,13 @@
 // src/pages/Details.tsx
 import { useContext } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import type { Event, JWTPayload } from "../types/types";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaCalendarAlt } from "react-icons/fa";
 
 const Details = () => {
   const { token } = useAuth();
@@ -17,7 +19,6 @@ const Details = () => {
   const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
 
   if (!evt) {
-    // ici, evt est forcément undefined
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">Événement introuvable…</p>
@@ -25,7 +26,7 @@ const Details = () => {
     );
   }
 
-  let userId: number | null = null;
+  let userId: number;
   if (token) {
     try {
       const payload = jwtDecode<JWTPayload>(token);
@@ -36,6 +37,10 @@ const Details = () => {
     }
   }
   const AddEventToCalendar = async () => {
+    if (!token) {
+      navigate("/connection-gate");
+      return;
+    }
     if (
       window.confirm(
         "Êtes-vous sûr de vouloir ajouter cet événement de votre calendrier ?"
@@ -72,34 +77,41 @@ const Details = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <img src={`${BASE_URL}${evt.image}`} />
-      <h1 className="text-4xl font-extrabold">{evt.title}</h1>
-      <div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <img
+        className="rounded-2xl h-[400px] object-cover mx-auto my-4"
+        src={`${BASE_URL}${evt.image}`}
+      />
+      <h1 className="text-xl">{evt.title}</h1>
+      <div className="my-4">
         <div className="flex items-center gap-x-4">
-          <div>Date Logo</div>
-          <div className="">
-            <div>jour</div>
-            <div>heure</div>
+          {/* <FaCalendarAlt className=" bg-white p-4 rounded-sm" /> */}
+          <div className="bg-white p-2 rounded-lg">
+            <FaCalendarAlt className="" />
+          </div>
+          <div className="text-sm">
+            <p className="text-gray-600">{formatDate(evt.start_date)}</p>
+            <p className="text-gray-600">{formatDate(evt.end_date)}</p>
           </div>
         </div>
         <div className="flex items-center gap-x-4">
-          <div>Loc Logo</div>
-          <div className="">
-            <div>Lieu</div>
-            <div>Adresse</div>
+          <div className="bg-white p-2 rounded-lg">
+            <FaLocationDot className="" />
+          </div>
+          <div className="text-sm">
+            {evt.location}, {evt.city}
           </div>
         </div>
         <div className="flex items-center gap-x-4">
-          <div>Profil pic</div>
-          <div className="">
-            <div>Organizer name</div>
+          <div className="h-8 w-8 bg-gray-200 rounded-lg"></div>
+          <div className="text-sm">
             <div>Organizer</div>
           </div>
+          <div className="ml-auto btn-gradient-border">+ Suivre</div>
         </div>
       </div>
-      <div>
-        <p>Tags</p>
+      <div className="bg-green-200 mb-6">
+        <p className="font-bold">Tags</p>
         <div>Lists of tags</div>
       </div>
       <div>
@@ -107,63 +119,8 @@ const Details = () => {
         <div>{evt.description}</div>
       </div>
       <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
-        {/* Contenu */}
-        <div className="p-6 bg-pink-50 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700">Dates</h2>
-              <p className="text-gray-600">{formatDate(evt.start_date)}</p>
-              <p className="text-gray-600">{formatDate(evt.end_date)}</p>
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700">Lieu</h2>
-              <p className="text-gray-600">
-                {evt.location}, {evt.city}
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Description</h2>
-            <p className="text-gray-800 leading-relaxed">{evt.description}</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700">Tarif</h2>
-              <p className="text-gray-600">
-                {parseFloat(evt.price).toFixed(2)} €
-              </p>
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700">Premium</h2>
-              <span
-                className={`inline-block px-2 py-1 rounded-full text-sm font-medium ${
-                  evt.is_premium
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                {evt.is_premium ? "Oui" : "Non"}
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* Actions */}
         <div className="p-6 border-t border-gray-200 flex justify-between">
-          <button
-            onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
-          >
-            ← Retour
-          </button>
-          <Link
-            to="/"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-          >
-            Voir tous les événements
-          </Link>
           <button onClick={AddEventToCalendar}>Ajouter au Calendrier</button>
         </div>
       </div>
