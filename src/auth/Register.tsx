@@ -5,6 +5,7 @@ import axios from "axios";
 import { CiUser } from "react-icons/ci";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
+import { TbChevronLeft } from "react-icons/tb";
 
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -55,7 +56,7 @@ const Register: React.FC = () => {
           onClick={() => navigate("/connection-gate")}
           className="flex-center absolute top-12 left-12 bg-white h-12 w-12 rounded-xl"
         >
-          <span className="text-3xl text-gradient">&lsaquo;</span>
+          <TbChevronLeft className="text-3xl text-primary-darker" />
         </div>
         <h1 className="text-[32px] font-bold">Créez votre compte</h1>
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}

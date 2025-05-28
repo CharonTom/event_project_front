@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: Poppins;
-  src: url("../assets/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
-  font-family: Roboto;
-  src: url("../assets/fonts/Roboto/static/Roboto-Regular.ttf")
-    format("truetype");
+  font-family: Biryani;
+  src: url("../assets/fonts/Biryani/Biryani-Regular.ttf") format("truetype");
+  font-family: Kanit;
+  src: url("../assets/fonts/Kanit/static/Kanit-Regular.ttf") format("truetype");
 }
 
 /* On utilise thème pour paramétrer les couleurs, polices, fonts */
 @theme {
-  --font-poppins: "Poppins", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
+  --font-biryani: "Biryani", sans-serif;
+  --font-kanit: "Kanit", sans-serif;
   --color-primary: #56d2d2;
+  --color-primary-darker: #42babf;
   --color-secondary: #593ea1;
   --color-grey-bg: #f3f3f3;
   --color-grey-text: #acadb9;
@@ -21,9 +21,9 @@
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
 @layer base {
-  /* body {
-    @apply font-poppins text-[16px];
-  } */
+  body {
+    @apply font-biryani text-[16px];
+  }
 
   section {
     @apply p-4 bg-grey-bg;
@@ -31,6 +31,12 @@
 
   input {
     @apply outline-none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-kanit;
   }
 }
 
@@ -52,7 +58,7 @@
     @apply p-1 text-gray-900 rounded-xl border-1 border-transparent;
     background-image: linear-gradient(#f3f3f3, #f3f3f3),
       linear-gradient(to bottom, #56d2d2 40%, #593ea1);
-    /* Fond blanc serre le contenu, puis le dégradé couvre la bordure */
+    /* Fbond blanc serre le contenu, puis le dégradé couvre la bordure */
     background-origin: padding-box, border-box;
     background-clip: padding-box, border-box;
   }
@@ -70,6 +76,14 @@
     /* clip et transparence pour le texte */
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .btn-white {
+    @apply py-2 px-3 rounded-xl border-1 text-primary-darker bg-white;
+  }
+
+  .tag {
+    @apply py-2 px-3 rounded-2xl border-1 text-primary-darker;
   }
 }
 

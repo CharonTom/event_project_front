@@ -7,7 +7,8 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import type { Event, JWTPayload } from "../types/types";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaBookmark, FaCalendarAlt } from "react-icons/fa";
+import { TbChevronLeft } from "react-icons/tb";
 
 const Details = () => {
   const { token } = useAuth();
@@ -77,26 +78,39 @@ const Details = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <img
-        className="rounded-2xl h-[400px] object-cover mx-auto my-4"
-        src={`${BASE_URL}${evt.image}`}
-      />
-      <h1 className="text-xl">{evt.title}</h1>
-      <div className="my-4">
+    <div className="py-24 min-h-screen bg-gray-50 p-4 relative">
+      <div
+        onClick={() => navigate("/")}
+        className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
+      >
+        <TbChevronLeft className="text-3xl text-primary-darker" />
+      </div>
+      <div className="relative">
+        <img
+          className="rounded-2xl h-[400px] object-cover mx-auto my-4"
+          src={`${BASE_URL}${evt.image}`}
+        />
+        <div className="absolute top-4 right-5 bg-gray-200/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
+          <FaBookmark
+            onClick={AddEventToCalendar}
+            className="text-primary-darker text-xl"
+          />
+        </div>
+      </div>
+      <h1 className="text-xl font-semibold">{evt.title}</h1>
+      <div className="my-4 p-4 flex flex-col gap-y-3">
         <div className="flex items-center gap-x-4">
-          {/* <FaCalendarAlt className=" bg-white p-4 rounded-sm" /> */}
           <div className="bg-white p-2 rounded-lg">
-            <FaCalendarAlt className="" />
+            <FaCalendarAlt className="text-primary-darker" />
           </div>
           <div className="text-sm">
-            <p className="text-gray-600">{formatDate(evt.start_date)}</p>
-            <p className="text-gray-600">{formatDate(evt.end_date)}</p>
+            <p className="">{formatDate(evt.start_date)}</p>
+            <p className="">{formatDate(evt.end_date)}</p>
           </div>
         </div>
         <div className="flex items-center gap-x-4">
           <div className="bg-white p-2 rounded-lg">
-            <FaLocationDot className="" />
+            <FaLocationDot className="text-primary-darker" />
           </div>
           <div className="text-sm">
             {evt.location}, {evt.city}
@@ -107,23 +121,31 @@ const Details = () => {
           <div className="text-sm">
             <div>Organizer</div>
           </div>
-          <div className="ml-auto btn-gradient-border">+ Suivre</div>
+          <div className="ml-auto btn-white text-sm">+ Suivre</div>
         </div>
       </div>
-      <div className="bg-green-200 mb-6">
-        <p className="font-bold">Tags</p>
-        <div>Lists of tags</div>
+      <div className="mb-6 p-4">
+        <p className="font-bold mb-2">Tags</p>
+        {evt.categories && (
+          <div>
+            {evt.categories.map((cat) => (
+              <span key={cat.category_id} className="mr-2 text-[10px] tag">
+                <span className="">{cat.name}</span>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
-      <div>
-        <div>description</div>
+      <div className="p-4">
+        <div>Description</div>
         <div>{evt.description}</div>
       </div>
-      <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
-        {/* Actions */}
+
+      {/* <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
         <div className="p-6 border-t border-gray-200 flex justify-between">
           <button onClick={AddEventToCalendar}>Ajouter au Calendrier</button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

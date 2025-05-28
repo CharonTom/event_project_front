@@ -85,22 +85,15 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
           {event.categories && (
             <div>
               {event.categories.map((cat) => (
-                <span
-                  key={cat.category_id}
-                  className="mr-2 text-[10px] tag-gradient-border"
-                >
-                  <span className="text-gradient">{cat.name}</span>
+                <span key={cat.category_id} className="mr-2 text-[10px] tag">
+                  <span className="">{cat.name}</span>
                 </span>
               ))}
             </div>
           )}
-          {event.price && (
-            <button className="btn-gradient my-4 text-xs">
-              {event.price} €
-            </button>
-          )}
+
           <div className="absolute top-2 left-2 bg-gray-100/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
-            <div className="text-[10px] font-bold leading-none px-1 text-gradient text-center">
+            <div className="text-[10px] font-bold leading-none px-1 text-primary-darker text-center">
               24 <br /> Avril
             </div>
           </div>
@@ -111,7 +104,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
                 e.stopPropagation(); // arrête la bulle d’événement
                 void handleAddToCalendar(); // ta logique d’ajout
               }}
-              className="text-primary"
+              className="text-primary-darker"
             />
           </div>
         </div>

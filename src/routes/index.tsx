@@ -15,6 +15,7 @@ import Calendar from "../pages/Calendar";
 import MyEvents from "../pages/MyEvents";
 import EditMyEvent from "../pages/EditMyEvent";
 import ChoicePage from "../auth/ChoicePage";
+import Setting from "../pages/Setting";
 
 const AppRoutes = () => (
   <Routes>
@@ -29,7 +30,8 @@ const AppRoutes = () => (
       {/* protégées */}
       <Route element={<PrivateRoute />}>
         <Route path="account" element={<Account />} />
-        <Route path="account/edit" element={<EditAccount />} />
+        <Route path="setting" element={<Setting />} />
+        <Route path="setting/edit" element={<EditAccount />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="events/create" element={<CreateEvent />} />
         <Route path="/calendar" element={<Calendar />} />
