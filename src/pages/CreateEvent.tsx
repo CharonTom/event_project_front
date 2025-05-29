@@ -6,7 +6,7 @@ export default function CreateEvent() {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg">
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg mb-20">
       <CreateEventForm
         onSuccess={() => navigate("/account")}
         onCancel={() => navigate(-1)}

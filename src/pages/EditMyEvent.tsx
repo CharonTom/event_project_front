@@ -136,7 +136,7 @@ export default function EditMyEvent() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 max-w-md mx-auto p-6 bg-white shadow rounded-lg"
+      className="space-y-4 max-w-md mx-auto p-6 bg-white shadow rounded-lg mb-24"
     >
       <h1 className="text-xl font-bold">Modifier l'événement</h1>
 
@@ -266,7 +266,7 @@ export default function EditMyEvent() {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mb-20"
         >
           {loading ? "Enregistrement..." : "Enregistrer"}
         </button>

@@ -71,7 +71,7 @@ export default function Events() {
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
+    <div className="mb-24 max-w-3xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
       <h1 className="text-2xl font-bold">Mes événements</h1>
 
       {events.length === 0 ? (
