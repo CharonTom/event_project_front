@@ -57,36 +57,6 @@ export default function Account() {
     fetchProfile();
   }, [token, fetchProfile]);
 
-  const handleEdit = () => {
-    navigate("/account/edit");
-  };
-
-  const handleDelete = async () => {
-    if (
-      !window.confirm(
-        "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
-      )
-    )
-      return;
-
-    try {
-      await axios.delete(`${BASE_URL}/users/${user?.user_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      navigate("/logout", { replace: true });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          "Erreur lors de la suppression du compte."
-      );
-    }
-  };
-
-  const handleLogout = () => {
-    navigate("/logout");
-  };
-
   if (loading) return <div>Chargement du profil…</div>;
   if (error) return <div className="text-red-600">{error}</div>;
   if (!user) return null;

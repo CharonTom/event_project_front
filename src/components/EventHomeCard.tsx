@@ -56,6 +56,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
         { event_id: event.event_id, wants_reminder: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Erreur lors de l'ajout au calendrier."

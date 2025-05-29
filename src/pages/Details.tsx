@@ -63,6 +63,7 @@ const Details = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.log(
           err.response?.data?.message ||
@@ -82,7 +83,7 @@ const Details = () => {
     });
 
   return (
-    <div className="py-24 min-h-screen bg-gray-50 p-4 relative">
+    <div className="py-24 min-h-screen p-4 relative">
       <div
         onClick={() => navigate("/")}
         className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"

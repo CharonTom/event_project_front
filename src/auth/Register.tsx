@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { CiUser } from "react-icons/ci";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
 import { TbChevronLeft } from "react-icons/tb";
+import { CiMail } from "react-icons/ci";
+import { CiPhone } from "react-icons/ci";
 
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -89,7 +91,7 @@ const Register: React.FC = () => {
             </div>
             {/* Email */}
             <div className="flex-center bg-white p-2 rounded">
-              <CiUser className="m-2 text-2xl" />
+              <CiMail className="m-2 text-2xl" />
               <input
                 id="email"
                 name="email"
@@ -104,7 +106,7 @@ const Register: React.FC = () => {
             </div>
             {/* Téléphone */}
             <div className="flex-center bg-white p-2 rounded">
-              <CiUser className="m-2 text-2xl" />
+              <CiPhone className="m-2 text-2xl" />
               <input
                 type="tel"
                 placeholder="Téléphone"
@@ -131,9 +133,9 @@ const Register: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="m-2 text-2xl focus:outline-none"
+                className="m-2 text-2xl text-gray-500 focus:outline-none"
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
               </button>
             </div>
           </div>

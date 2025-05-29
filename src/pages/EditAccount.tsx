@@ -5,6 +5,9 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import type { JWTPayload, UserProfile } from "../types/types";
+import { TbChevronLeft } from "react-icons/tb";
+import { CiLock, CiMail, CiPhone, CiUser } from "react-icons/ci";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function EditAccount() {
   const { token } = useAuth();
@@ -18,6 +21,8 @@ export default function EditAccount() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
@@ -91,21 +96,87 @@ export default function EditAccount() {
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow rounded-lg space-y-6">
-      <h1 className="text-2xl font-bold text-center">Modifier mon profil</h1>
+    <section className="py-24 min-h-screen relative">
+      <div
+        onClick={() => navigate("/")}
+        className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
+      >
+        <TbChevronLeft className="text-3xl text-primary-darker" />
+      </div>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <p>Prénom</p>
+        {/* Prénom */}
+        <div className="flex-center bg-white p-2 rounded">
+          <CiUser className="m-2 text-2xl" />
           <input
             type="text"
             placeholder="Prénom"
             required
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className="border rounded px-3 py-2 w-full"
+            className="w-full px-3 py-2"
           />
         </div>
-        <div>
+        {/* Nom */}
+        <div className="flex-center bg-white p-2 rounded">
+          <CiUser className="m-2 text-2xl" />
+          <input
+            type="text"
+            placeholder="Nom"
+            required
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="w-full px-3 py-2"
+          />
+        </div>
+        {/* Email */}
+        <div className="flex-center bg-white p-2 rounded">
+          <CiMail className="m-2 text-2xl" />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2"
+            placeholder="Email"
+          />
+        </div>
+        {/* Téléphone */}
+        <div className="flex-center bg-white p-2 rounded">
+          <CiPhone className="m-2 text-2xl" />
+          <input
+            type="tel"
+            placeholder="Téléphone"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full px-3 py-2"
+          />
+        </div>
+        {/* Mot de passe */}
+        <div className="flex-center bg-white p-2 rounded">
+          <CiLock className="m-2 text-2xl" />
+          <input
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2"
+            placeholder="Nouveau Mot de passe"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="m-2 text-2xl text-gray-500 focus:outline-none"
+          >
+            {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+          </button>
+        </div>
+        {/* <div>
           <p>Nom</p>
           <input
             type="text"
@@ -147,17 +218,16 @@ export default function EditAccount() {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border rounded px-3 py-2"
           />
-        </div>
+        </div> */}
         <button
           type="submit"
           disabled={saving}
           className={`w-full py-2 px-4 text-white rounded-md 
-            ${saving ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"}
-            focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+            ${saving ? "bg-gray-400" : "bg-primary "}`}
         >
           {saving ? "Enregistrement…" : "Enregistrer les modifications"}
         </button>
       </form>
-    </div>
+    </section>
   );
 }

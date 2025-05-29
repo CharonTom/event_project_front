@@ -22,7 +22,7 @@
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
 @layer base {
   body {
-    @apply font-biryani text-[16px];
+    @apply font-biryani text-[16px] bg-grey-bg;
   }
 
   section {
