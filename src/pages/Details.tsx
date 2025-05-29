@@ -1,5 +1,5 @@
 // src/pages/Details.tsx
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 import { jwtDecode } from "jwt-decode";
@@ -8,7 +8,7 @@ import axios from "axios";
 import type { Event, JWTPayload } from "../types/types";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBookmark, FaCalendarAlt } from "react-icons/fa";
-import { TbChevronLeft } from "react-icons/tb";
+import { TbChevronLeft, TbChevronDown } from "react-icons/tb";
 
 const Details = () => {
   const { token } = useAuth();
@@ -17,7 +17,10 @@ const Details = () => {
   const { id } = useParams<{ id: string }>();
   const eventId = Number(id);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
-  const evt: Event | undefined = events.find((e) => e.event_id === eventId); // On compare l'id de l'événement passé dans l'url et celui de l'objet event dans l'API et on le stock
+  const evt: Event | undefined = events.find((e) => e.event_id === eventId);
+
+  // State to control accordion
+  const [isOpen, setIsOpen] = useState(false);
 
   if (!evt) {
     return (
@@ -31,12 +34,13 @@ const Details = () => {
   if (token) {
     try {
       const payload = jwtDecode<JWTPayload>(token);
-      userId = payload.id; // On récupère l'id du User directement dans son Token
+      userId = payload.id;
       console.log(userId);
     } catch {
       console.warn("Token invalide, impossible de récupérer l'userId");
     }
   }
+
   const AddEventToCalendar = async () => {
     if (!token) {
       navigate("/connection-gate");
@@ -44,7 +48,7 @@ const Details = () => {
     }
     if (
       window.confirm(
-        "Êtes-vous sûr de vouloir ajouter cet événement de votre calendrier ?"
+        "Êtes-vous sûr de vouloir ajouter cet événement à votre calendrier ?"
       )
     ) {
       try {
@@ -58,7 +62,6 @@ const Details = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.log(
           err.response?.data?.message ||
@@ -85,6 +88,7 @@ const Details = () => {
       >
         <TbChevronLeft className="text-3xl text-primary-darker" />
       </div>
+
       <div className="relative">
         <img
           className="rounded-2xl h-[400px] object-cover mx-auto my-4"
@@ -97,15 +101,17 @@ const Details = () => {
           />
         </div>
       </div>
+
       <h1 className="text-xl font-semibold">{evt.title}</h1>
-      <div className="my-4 p-4 flex flex-col gap-y-3">
+
+      <div className="my-1 p-4 flex flex-col gap-y-3">
         <div className="flex items-center gap-x-4">
           <div className="bg-white p-2 rounded-lg">
             <FaCalendarAlt className="text-primary-darker" />
           </div>
           <div className="text-sm">
-            <p className="">{formatDate(evt.start_date)}</p>
-            <p className="">{formatDate(evt.end_date)}</p>
+            <p>{formatDate(evt.start_date)}</p>
+            <p>{formatDate(evt.end_date)}</p>
           </div>
         </div>
         <div className="flex items-center gap-x-4">
@@ -124,7 +130,7 @@ const Details = () => {
           <div className="ml-auto btn-white text-sm">+ Suivre</div>
         </div>
       </div>
-      <div className="mb-6 p-4">
+      <div className="mb-6 px-4">
         <p className="font-bold mb-2">Tags</p>
         {evt.categories && (
           <div>
@@ -136,16 +142,28 @@ const Details = () => {
           </div>
         )}
       </div>
-      <div className="p-4">
-        <div>Description</div>
-        <div>{evt.description}</div>
+      {/* Accordion for Description */}
+      <div className="mb-6 p-4">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between font-bold text-left border-b pb-2 border-gray-400"
+        >
+          <span className="">Description</span>
+          <TbChevronDown
+            className={` text-2xl transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+        {isOpen && (
+          <div className="mt-6 text-sm text-gray-700">{evt.description}</div>
+        )}
       </div>
-
-      {/* <div className="bg-white shadow-lg rounded-2xl max-w-3xl w-full">
-        <div className="p-6 border-t border-gray-200 flex justify-between">
-          <button onClick={AddEventToCalendar}>Ajouter au Calendrier</button>
-        </div>
-      </div> */}
+      <div className="flex justify-center">
+        <button className="bg-primary-darker text-white py-2 px-3 rounded-xl text-sm">
+          à {evt.price} €
+        </button>
+      </div>
     </div>
   );
 };

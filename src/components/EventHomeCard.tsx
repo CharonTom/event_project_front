@@ -50,6 +50,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Tu peux déclencher un toast ici pour le succès
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Erreur lors de l'ajout au calendrier."
