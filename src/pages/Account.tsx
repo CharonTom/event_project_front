@@ -23,14 +23,10 @@ export default function Account() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
-
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [events, setEvents] = useState<Event[]>([]);
-  const [loadingEvents, setLoadingEvents] = useState(true);
-  const [errorEvents, setErrorEvents] = useState<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
     if (!token) return;
@@ -64,15 +60,11 @@ export default function Account() {
 
   const fetchMyEvents = useCallback(async () => {
     if (!token) return;
-    setLoadingEvents(true);
-    setErrorEvents(null);
 
     let payload: JWTPayload;
     try {
       payload = jwtDecode<JWTPayload>(token);
     } catch {
-      setErrorEvents("Token invalide.");
-      setLoadingEvents(false);
       return;
     }
 
@@ -82,14 +74,7 @@ export default function Account() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEvents(data);
-    } catch (err: any) {
-      setErrorEvents(
-        err.response?.data?.message ||
-          `Erreur ${err.response?.status} lors du chargement des événements.`
-      );
-    } finally {
-      setLoadingEvents(false);
-    }
+    } catch (err: any) {}
   }, [token, BASE_URL]);
 
   useEffect(() => {
@@ -115,9 +100,9 @@ export default function Account() {
       </div>
       <div
         onClick={() => navigate("/events/create")}
-        className="flex-center absolute top-8 right-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
+        className="flex-center absolute top-8 right-8  rounded-xl cursor-pointer btn-primary text-sm p-4"
       >
-        Créer
+        Créer un événement
       </div>
 
       <div className="text-center flex flex-col items-center">
@@ -146,112 +131,21 @@ export default function Account() {
         <div>AVIS</div>
       </div>
 
-      {/* Liste classique en UL */}
-      <div className="mt-8 max-w-3xl mx-auto p-6 bg-white shadow rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Mes événements</h2>
-
-        {loadingEvents ? (
-          <div>Chargement de vos événements…</div>
-        ) : errorEvents ? (
-          <div className="text-red-600">{errorEvents}</div>
-        ) : events.length === 0 ? (
-          <p>Vous n'avez encore créé aucun événement.</p>
-        ) : (
-          <ul className="space-y-6">
-            {events.map((ev) => (
-              <li
-                key={ev.event_id}
-                className="p-4 border rounded-lg flex flex-col sm:flex-row sm:space-x-6"
-              >
-                {ev.image && (
-                  <img
-                    src={`${BASE_URL}${ev.image}`}
-                    alt={ev.title}
-                    className="w-full h-48 sm:w-48 sm:h-32 object-cover rounded-lg mb-4 sm:mb-0"
-                  />
-                )}
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold">{ev.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">
-                      {new Date(ev.start_date).toLocaleString("fr-FR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                    {ev.description && <p className="mb-2">{ev.description}</p>}
-                    <div className="flex flex-wrap gap-2">
-                      {ev.categories?.map((cat) => (
-                        <span
-                          key={cat.category_id}
-                          className="text-xs bg-gradient-to-b from-[#56d2d2] to-[#593ea1] inline-block text-transparent bg-clip-text px-2 py-1 rounded-full border border-gray-300"
-                        >
-                          {cat.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="mt-4 flex space-x-2 justify-end">
-                    <button
-                      onClick={() => navigate(`/events/${ev.event_id}/edit`)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={async () => {
-                        if (
-                          !window.confirm(
-                            "Voulez-vous vraiment supprimer cet événement ?"
-                          )
-                        )
-                          return;
-                        try {
-                          await axios.delete(
-                            `${BASE_URL}/events/${ev.event_id}`,
-                            {
-                              headers: { Authorization: `Bearer ${token}` },
-                            }
-                          );
-                          fetchMyEvents();
-                        } catch (err: any) {
-                          alert(
-                            err.response?.data?.message ||
-                              `Erreur ${err.response?.status} lors de la suppression.`
-                          );
-                        }
-                      }}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <button
-          onClick={() => navigate("/events/create")}
-          className="mt-6 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Créer un nouvel événement
-        </button>
-      </div>
-
       {/* Aperçu de vos événements en cartes avec scroll horizontal */}
       {events.length > 0 && (
         <div className="mt-10 px-4 max-w-3xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-4">
-            Vos événements en aperçu
-          </h2>
+          <h2 className="mb-4">Vos Evénements</h2>
           <div className="flex space-x-4 overflow-x-scroll pb-4">
             {events.map((e) => (
-              <EventHomeCard key={e.event_id} event={e} baseUrl={BASE_URL} />
+              <div>
+                <EventHomeCard key={e.event_id} event={e} baseUrl={BASE_URL} />
+                <p
+                  className="btn-primary w-min p-2 text-sm"
+                  onClick={() => navigate(`/events/${e.event_id}/edit`)}
+                >
+                  Editer
+                </p>
+              </div>
             ))}
           </div>
         </div>

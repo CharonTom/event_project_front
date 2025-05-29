@@ -121,12 +121,29 @@ export default function EditMyEvent() {
           // Let browser set Content-Type
         },
       });
-      navigate("/my-events");
+      navigate("/account");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur lors de la mise à jour");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Voulez-vous vraiment supprimer cet événement ?"))
+      return;
+    if (!token || !id) return;
+    try {
+      await axios.delete(`${BASE_URL}/events/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      navigate("/account");
+    } catch (err: any) {
+      alert(
+        err.response?.data?.message ||
+          `Erreur ${err.response?.status} lors de la suppression.`
+      );
     }
   };
 
@@ -258,15 +275,22 @@ export default function EditMyEvent() {
       <div className="flex space-x-4 pt-2 justify-end">
         <button
           type="button"
-          onClick={() => navigate("/my-events")}
+          onClick={() => navigate("/account")}
           className="px-4 py-2 border rounded hover:bg-gray-100"
         >
           Annuler
         </button>
         <button
+          type="button"
+          onClick={handleDelete}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Supprimer
+        </button>
+        <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mb-20"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           {loading ? "Enregistrement..." : "Enregistrer"}
         </button>
