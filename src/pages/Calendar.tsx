@@ -4,8 +4,11 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import type { CalendarEvent, UserProfile, JWTPayload } from "../types/types";
+import { TbChevronLeft } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 export default function CalendarPage() {
+  const navigate = useNavigate();
   const { token } = useAuth();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,37 +80,46 @@ export default function CalendarPage() {
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
-      <h1 className="text-2xl font-bold">Mon calendrier</h1>
-      {events.length === 0 ? (
-        <p>Aucun événement enregistré.</p>
-      ) : (
-        <ul className="space-y-4">
-          {events.map((ce) => (
-            <li
-              key={ce.calendar_event_id}
-              className="p-4 border rounded-lg space-y-2"
-            >
-              <p>
-                <span className="font-semibold">Titre :</span> {ce.event.title}
-              </p>
-              <p>
-                <span className="font-semibold">Date :</span>{" "}
-                {new Date(ce.event.start_date).toLocaleString()}
-              </p>
-              {ce.wants_reminder && (
-                <p className="text-sm text-gray-600">Rappel activé</p>
-              )}
-              <button
-                onClick={() => removeFromCalendar(ce.event.event_id)}
-                className="text-red-600 hover:underline"
+    <section className="py-24 min-h-screen relative">
+      <div className="mx-auto w-full max-w-2xl">
+        <div
+          onClick={() => navigate("/")}
+          className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
+        >
+          <TbChevronLeft className="text-3xl text-primary-darker" />
+        </div>
+        <h1 className="text-xl text-center">Agenda</h1>
+        {events.length === 0 ? (
+          <p>Aucun événement enregistré.</p>
+        ) : (
+          <ul className="space-y-4">
+            {events.map((ce) => (
+              <li
+                key={ce.calendar_event_id}
+                className="p-4 border rounded-lg space-y-2"
               >
-                Supprimer de mon calendrier
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+                <p>
+                  <span className="font-semibold">Titre :</span>{" "}
+                  {ce.event.title}
+                </p>
+                <p>
+                  <span className="font-semibold">Date :</span>{" "}
+                  {new Date(ce.event.start_date).toLocaleString()}
+                </p>
+                {ce.wants_reminder && (
+                  <p className="text-sm text-gray-600">Rappel activé</p>
+                )}
+                <button
+                  onClick={() => removeFromCalendar(ce.event.event_id)}
+                  className="text-red-600 hover:underline"
+                >
+                  Supprimer de mon calendrier
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
   );
 }

@@ -32,23 +32,25 @@ const Home = () => {
 
   return (
     <section className="pb-20">
-      <img className="w-32" src={Logo} alt="Logo de l'application"></img>
-      <TodayHomeCard />
-      {parentNames.map((parent) => (
-        <div key={parent}>
-          <h2 className="text-sm font-semibold text-gray-800">{parent}</h2>
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {eventsByParent[parent].map((evt) => (
-              <EventHomeCard
-                key={evt.event_id}
-                event={evt}
-                baseUrl={BASE_URL}
-              />
-            ))}
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <img className="w-32" src={Logo} alt="Logo de l'application"></img>
+        <TodayHomeCard />
+        {parentNames.map((parent) => (
+          <div key={parent}>
+            <h2 className="text-sm font-semibold text-gray-800">{parent}</h2>
+            <div className="flex gap-6 overflow-x-auto pb-4">
+              {eventsByParent[parent].map((evt) => (
+                <EventHomeCard
+                  key={evt.event_id}
+                  event={evt}
+                  baseUrl={BASE_URL}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-      <HomeBanner />
+        ))}
+        <HomeBanner />
+      </div>
     </section>
   );
 };

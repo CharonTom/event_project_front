@@ -105,61 +105,63 @@ function Setting() {
 
   return (
     <section className="py-24 min-h-screen relative">
-      <div
-        onClick={() => navigate("/")}
-        className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
-      >
-        <TbChevronLeft className="text-3xl text-primary-darker" />
-      </div>
-
-      <div className="my-4 flex items-center justify-around">
-        <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
-          {getInitials(user?.first_name, user?.last_name)}
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <div
+          onClick={() => navigate("/")}
+          className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
+        >
+          <TbChevronLeft className="text-3xl text-primary-darker" />
         </div>
-        <div className="text-center">
-          <div className="font-semibold text-xl">
-            {capitalize(user?.first_name)} {capitalize(user?.last_name)}
+
+        <div className="my-4 flex items-center justify-around">
+          <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
+            {getInitials(user?.first_name, user?.last_name)}
           </div>
-          <div>{user?.email}</div>
-          <div>{user?.phone}</div>
-        </div>
-      </div>
-
-      <div className="p-4">
-        <div className="my-6 flex items-center justify-between">
-          <p onClick={handleEdit}>Modifier le profil</p>
-          <TbChevronRight className="text-2xl" />
+          <div className="text-center">
+            <div className="font-semibold text-xl">
+              {capitalize(user?.first_name)} {capitalize(user?.last_name)}
+            </div>
+            <div>{user?.email}</div>
+            <div>{user?.phone}</div>
+          </div>
         </div>
 
-        <div className="my-6 flex items-center justify-between">
-          <p>Préférences d'événements</p>
-          <TbChevronRight className="text-2xl" />
-        </div>
-        <div className="my-6 flex items-center justify-between">
-          <p>Notifications</p>
-          <TbChevronRight className="text-2xl" />
-        </div>
-        <div className="my-6 flex items-center justify-between">
-          <p>FAQ</p>
-          <TbChevronRight className="text-2xl" />
-        </div>
-        <div className="my-6 flex items-center justify-between">
-          <p>Contactez-nous</p>
-          <TbChevronRight className="text-2xl" />
-        </div>
-        <div className="mt-6 mb-4 flex items-center justify-between">
-          <p onClick={handleLogout}>Se déconnecter</p>
-          <TbChevronRight className="text-2xl" />
-        </div>
-      </div>
+        <div className="p-4">
+          <div className="my-6 flex items-center justify-between">
+            <p onClick={handleEdit}>Modifier le profil</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
 
-      <div className="text-center text-primary">
-        <p className="text-red-500 mb-4" onClick={handleDelete}>
-          Supprimer mon compte
-        </p>
-        <p className="mb-2">conditions d'utilisations</p>
-        <p className="mb-2 text-gray-500 font-semibold">---</p>
-        <p className="mb-2">Politique de confidentialité</p>
+          <div className="my-6 flex items-center justify-between">
+            <p>Préférences d'événements</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
+          <div className="my-6 flex items-center justify-between">
+            <p>Notifications</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
+          <div className="my-6 flex items-center justify-between">
+            <p>FAQ</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
+          <div className="my-6 flex items-center justify-between">
+            <p>Contactez-nous</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
+          <div className="mt-6 mb-4 flex items-center justify-between">
+            <p onClick={handleLogout}>Se déconnecter</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
+        </div>
+
+        <div className="text-center text-primary">
+          <p className="text-red-500 mb-4" onClick={handleDelete}>
+            Supprimer mon compte
+          </p>
+          <p className="mb-2">conditions d'utilisations</p>
+          <p className="mb-2 text-gray-500 font-semibold">---</p>
+          <p className="mb-2">Politique de confidentialité</p>
+        </div>
       </div>
     </section>
   );

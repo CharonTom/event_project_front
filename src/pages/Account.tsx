@@ -7,6 +7,7 @@ import type { JWTPayload, UserProfile, Event } from "../types/types";
 import axios from "axios";
 import { TbChevronLeft } from "react-icons/tb";
 import EventHomeCard from "../components/EventHomeCard";
+import { GoPlusCircle } from "react-icons/go";
 
 // Utility to capitalize a name
 const capitalize = (str: string = ""): string =>
@@ -92,64 +93,70 @@ export default function Account() {
 
   return (
     <section className="py-24 min-h-screen relative">
-      <div
-        onClick={() => navigate("/")}
-        className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
-      >
-        <TbChevronLeft className="text-3xl text-primary-darker" />
-      </div>
-      <div
-        onClick={() => navigate("/events/create")}
-        className="flex-center absolute top-8 right-8  rounded-xl cursor-pointer btn-primary text-sm p-4"
-      >
-        Créer un événement
-      </div>
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <div
+          onClick={() => navigate("/")}
+          className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
+        >
+          <TbChevronLeft className="text-3xl text-primary-darker" />
+        </div>
+        <div
+          onClick={() => navigate("/events/create")}
+          className="flex-center absolute top-8 right-8 rounded-xl cursor-pointer bg-white text-primary p-4"
+        >
+          <GoPlusCircle />
+        </div>
 
-      <div className="text-center flex flex-col items-center">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
-            {getInitials(user?.first_name, user?.last_name)}
+        <div className="text-center flex flex-col items-center">
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
+              {getInitials(user?.first_name, user?.last_name)}
+            </div>
+          </div>
+          <div className="text-xl font-semibold">
+            {capitalize(user?.first_name)} {capitalize(user?.last_name)}
           </div>
         </div>
-        <div className="text-xl font-semibold">
-          {capitalize(user?.first_name)} {capitalize(user?.last_name)}
+
+        <div className="mt-6 flex-center gap-x-8 text-center text-sm text-gray-600">
+          <p>
+            <strong>350</strong> <br /> Following
+          </p>
+          <p>
+            <strong>346</strong> <br /> Followers
+          </p>
         </div>
-      </div>
 
-      <div className="mt-6 flex-center gap-x-8 text-center text-sm text-gray-600">
-        <p>
-          <strong>350</strong> <br /> Following
-        </p>
-        <p>
-          <strong>346</strong> <br /> Followers
-        </p>
-      </div>
+        <div className="flex items-center justify-between p-4 mt-3 border-b">
+          <div>ABOUT</div>
+          <div className="text-primary border-b-2">MES ÉVÉNEMENTS</div>
+          <div>AVIS</div>
+        </div>
 
-      <div className="flex items-center justify-between p-4 mt-3 border-b">
-        <div>ABOUT</div>
-        <div className="text-primary border-b-2">MES ÉVÉNEMENTS</div>
-        <div>AVIS</div>
-      </div>
-
-      {/* Aperçu de vos événements en cartes avec scroll horizontal */}
-      {events.length > 0 && (
-        <div className="mt-10 px-4 max-w-3xl mx-auto">
-          <h2 className="mb-4">Vos Evénements</h2>
-          <div className="flex space-x-4 overflow-x-scroll pb-4">
-            {events.map((e) => (
-              <div>
-                <EventHomeCard key={e.event_id} event={e} baseUrl={BASE_URL} />
-                <p
-                  className="btn-primary w-min p-2 text-sm"
-                  onClick={() => navigate(`/events/${e.event_id}/edit`)}
-                >
-                  Editer
-                </p>
-              </div>
-            ))}
+        {/* Aperçu de vos événements en cartes avec scroll horizontal */}
+        {events.length > 0 && (
+          <div className="mt-10 px-4 max-w-3xl mx-auto">
+            <h2 className="mb-4">Vos Evénements</h2>
+            <div className="flex space-x-4 overflow-x-scroll pb-4">
+              {events.map((e) => (
+                <div>
+                  <EventHomeCard
+                    key={e.event_id}
+                    event={e}
+                    baseUrl={BASE_URL}
+                  />
+                  <p
+                    className="btn-primary w-min p-2 text-sm"
+                    onClick={() => navigate(`/events/${e.event_id}/edit`)}
+                  >
+                    Editer
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
