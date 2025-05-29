@@ -9,6 +9,7 @@ import type { Event, JWTPayload } from "../types/types";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBookmark, FaCalendarAlt } from "react-icons/fa";
 import { TbChevronLeft, TbChevronDown } from "react-icons/tb";
+import EventHomeCard from "../components/EventHomeCard";
 
 const Details = () => {
   const { token } = useAuth();
@@ -146,7 +147,7 @@ const Details = () => {
       <div className="mb-6 p-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between font-bold text-left border-b pb-2 border-gray-400"
+          className="w-full flex items-center justify-between text-left border-b pb-2 border-gray-400"
         >
           <span className="">Description</span>
           <TbChevronDown
@@ -163,6 +164,15 @@ const Details = () => {
         <button className="bg-primary-darker text-white py-2 px-3 rounded-xl text-sm">
           à {evt.price} €
         </button>
+      </div>
+      {/* Horizontal scroll of all events */}
+      <div className="mt-10 px-4">
+        <h2 className="text-sm   mb-1">En fonction de vos intêrets</h2>
+        <div className="flex space-x-4 overflow-x-scroll pb-4">
+          {events.map((e) => (
+            <EventHomeCard key={e.event_id} event={e} baseUrl={BASE_URL} />
+          ))}
+        </div>
       </div>
     </div>
   );

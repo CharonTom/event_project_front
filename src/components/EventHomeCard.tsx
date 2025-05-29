@@ -1,12 +1,11 @@
 // src/components/EventHomeCard.tsx
 import { Link, useNavigate } from "react-router-dom";
-import { FaBookmark } from "react-icons/fa6";
+import { FaBookmark, FaLocationDot } from "react-icons/fa6";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import type { EventHomeCardProps, JWTPayload } from "../types/types";
-import { FaLocationDot } from "react-icons/fa6";
 
 const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
   const { token } = useAuth();
@@ -21,6 +20,14 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+  // Extract day and month for badge
+  const badgeDay = new Date(event.start_date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+  });
+  const badgeMonth = new Date(event.start_date).toLocaleDateString("fr-FR", {
+    month: "long",
+  });
 
   const handleAddToCalendar = async () => {
     if (!token) {
@@ -49,8 +56,6 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
         { event_id: event.event_id, wants_reminder: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      // Tu peux déclencher un toast ici pour le succès
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Erreur lors de l'ajout au calendrier."
@@ -87,23 +92,26 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
             <div>
               {event.categories.map((cat) => (
                 <span key={cat.category_id} className="mr-2 text-[10px] tag">
-                  <span className="">{cat.name}</span>
+                  {cat.name}
                 </span>
               ))}
             </div>
           )}
 
+          {/* Dynamic date badge */}
           <div className="absolute top-2 left-2 bg-gray-100/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
             <div className="text-[10px] font-bold leading-none px-1 text-primary-darker text-center">
-              24 <br /> Avril
+              {badgeDay} <br /> {badgeMonth}
             </div>
           </div>
+
+          {/* Bookmark icon */}
           <div className="absolute top-2 right-2 bg-gray-200/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
             <FaBookmark
               onClick={(e) => {
-                e.preventDefault(); // empêche la navigation Link
-                e.stopPropagation(); // arrête la bulle d’événement
-                void handleAddToCalendar(); // ta logique d’ajout
+                e.preventDefault();
+                e.stopPropagation();
+                void handleAddToCalendar();
               }}
               className="text-primary-darker"
             />
@@ -111,7 +119,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
         </div>
       </Link>
 
-      {/* Bouton Ajouter au calendrier */}
+      {/* Error message */}
       <div className="mt-3 flex items-center">
         {error && <p className="text-red-500 text-xs ml-2">{error}</p>}
       </div>
