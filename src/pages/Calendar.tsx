@@ -73,7 +73,7 @@ export default function CalendarPage() {
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
-          "Erreur lors de la suppression de l'événement.."
+          "Erreur lors de la suppression de l'événement."
       );
     }
   };
