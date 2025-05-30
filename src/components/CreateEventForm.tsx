@@ -1,12 +1,13 @@
-// src/components/CreateEventForm.tsx
 import { useState, useEffect, FormEvent } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import type { Category, CEFProps } from "../types/types";
+import { TbChevronLeft } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
   const { token } = useAuth();
-
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -23,7 +24,6 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
-  // Charge les catégories disponibles
   useEffect(() => {
     axios
       .get<Category[]>(`${BASE_URL}/categories`)
@@ -38,7 +38,6 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
     setLoading(true);
     setError(null);
 
-    // Construction du FormData
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -58,11 +57,9 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
       await axios.post(`${BASE_URL}/events`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          // Ne pas fixer manuellement content-type ici
         },
       });
       onSuccess();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -73,151 +70,169 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
     }
   };
 
+  // Classes utilitaires communes pour les champs sans bordure noire
+  const inputClasses =
+    "w-full border-none rounded px-2 py-2 bg-primary-input focus:outline-none focus:ring-2 focus:ring-blue-200 rounded-lg";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold">Créer un événement</h2>
-
-      {error && <p className="text-red-600">{error}</p>}
-
-      {/* Titre */}
-      <div>
-        <label className="block font-medium">Titre</label>
-        <input
-          type="text"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-
-      {/* Description */}
-      <div>
-        <label className="block font-medium">Description</label>
-        <textarea
-          required
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-
-      {/* Dates */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block font-medium">Date de début</label>
-          <input
-            type="datetime-local"
-            required
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
-        <div>
-          <label className="block font-medium">Date de fin</label>
-          <input
-            type="datetime-local"
-            required
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
-      </div>
-
-      {/* Lieu et Ville */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block font-medium">Lieu</label>
-          <input
-            type="text"
-            required
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
-        <div>
-          <label className="block font-medium">Ville</label>
-          <input
-            type="text"
-            required
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
-      </div>
-
-      {/* Prix */}
-      <div>
-        <label className="block font-medium">Prix (€)</label>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          required
-          value={price}
-          onChange={(e) => setPrice(parseFloat(e.target.value))}
-          className="w-32 border rounded px-2 py-1"
-        />
-      </div>
-
-      {/* Catégories */}
-      <div>
-        <label className="block font-medium">Catégories</label>
-        <select
-          multiple
-          required
-          value={selectedCats.map(String)}
-          onChange={(e) =>
-            setSelectedCats(
-              Array.from(e.target.selectedOptions, (o) => +o.value)
-            )
-          }
-          className="w-full border rounded px-2 py-1"
+    <section className="py-24 min-h-screen relative text-sm">
+      <div className="mx-auto w-full max-w-2xl p-2">
+        <div
+          onClick={() => navigate("/account")}
+          className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
         >
-          {categories.map((cat) => (
-            <option key={cat.category_id} value={cat.category_id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          <TbChevronLeft className="text-3xl text-primary-darker" />
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <h2 className="text-xl font-semibold">Information de base</h2>
 
-      {/* Upload d'image */}
-      <div>
-        <label className="block font-medium">Image de l'événement</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              setFile(e.target.files[0]);
-            }
-          }}
-          className="w-full"
-        />
-      </div>
+          {error && <p className="text-red-600">{error}</p>}
 
-      {/* Boutons */}
-      <div className="flex space-x-4 pt-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        >
-          {loading ? "Création..." : "Créer"}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 border rounded hover:bg-gray-100"
-        >
-          Annuler
-        </button>
+          {/* Titre */}
+          <div>
+            <label className="block mb-1">Titre de l'évènement</label>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block mb-1">Description de l'évènement</label>
+            <textarea
+              rows={5}
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+
+          {/* Catégories */}
+          <div>
+            <label className="block mb-1">Catégories</label>
+            <select
+              multiple
+              required
+              value={selectedCats.map(String)}
+              onChange={(e) =>
+                setSelectedCats(
+                  Array.from(e.target.selectedOptions, (o) => +o.value)
+                )
+              }
+              className={inputClasses}
+            >
+              {categories.map((cat) => (
+                <option key={cat.category_id} value={cat.category_id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <h2 className="text-xl font-semibold">Date et lieu</h2>
+
+          {/* Dates */}
+          <div>
+            <label className="block mb-1">Date et heure de début</label>
+            <input
+              type="datetime-local"
+              required
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+          <div>
+            <label className="block mb-1">Date et heure de fin</label>
+            <input
+              type="datetime-local"
+              required
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+
+          {/* Lieu et Ville */}
+          <div>
+            <label className="block mb-1">Adresse</label>
+            <input
+              type="text"
+              required
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+          <div>
+            <label className="block mb-1">Ville</label>
+            <input
+              type="text"
+              required
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className={inputClasses}
+            />
+          </div>
+
+          {/* Prix */}
+          <h2 className="text-xl font-semibold">Tarifs & Billets</h2>
+
+          <div>
+            <label className="block mb-1">Prix du billet</label>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              required
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              className={inputClasses}
+            />
+          </div>
+
+          {/* Upload d'image */}
+          <h2 className="text-xl font-semibold">Médias</h2>
+          <div className="flex items-center">
+            {/* Bouton personnalisé pour ouvrir le sélecteur de fichier */}
+            <label htmlFor="file-upload" className="btn-primary py-2">
+              Parcourir…
+            </label>
+            {/* Affichage du nom du fichier ou d’un texte par défaut */}
+            <span className="text-gray-700 bg-primary-input p-2 w-full rounded-lg">
+              {file ? file.name : "Aucun fichier sélectionné"}
+            </span>
+            {/* Input natif masqué */}
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setFile(e.target.files[0]);
+                }
+              }}
+              className="hidden"
+            />
+          </div>
+
+          {/* Boutons */}
+          <div className="flex space-x-4 pt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary py-2"
+            >
+              {loading ? "Création..." : "Ajouter"}
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </section>
   );
 }

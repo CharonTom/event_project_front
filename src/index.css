@@ -13,10 +13,10 @@
   --font-kanit: "Kanit", sans-serif;
   --color-primary: #56d2d2;
   --color-primary-darker: #42babf;
+  --color-primary-input: #56d2d233;
   --color-secondary: #593ea1;
   --color-grey-bg: #f3f3f3;
   --color-grey-text: #acadb9;
-  --color-grey-navbar: #acadb9;
 }
 
 /* On utilise base pour stocker le css basique d'un élément html ( h1, nav, li, section, body ... */
@@ -26,7 +26,7 @@
   }
 
   section {
-    @apply p-4 bg-grey-bg;
+    @apply p-4;
   }
 
   input {
