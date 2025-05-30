@@ -50,6 +50,7 @@ export default function Account() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -77,12 +78,17 @@ export default function Account() {
       );
       setEvents(data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {}
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          `Erreur ${err.response?.status} lors du chargement des événements.`
+      );
+    }
   }, [token, BASE_URL]);
 
   useEffect(() => {
     if (!token) {
-      setError("Vous devez être connecté.");
+      setError("Vous devez être connecté");
       setLoading(false);
       return;
     }
