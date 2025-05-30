@@ -122,7 +122,11 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
 
       {/* Error message */}
       <div className="mt-3 flex items-center">
-        {error && <p className="text-red-500 text-xs ml-2">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-xs ml-2">
+            L'évenement est déjà ajouter à l'agenda
+          </p>
+        )}
       </div>
     </div>
   );

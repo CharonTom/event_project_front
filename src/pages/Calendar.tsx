@@ -1,16 +1,18 @@
-// src/pages/Calendar.tsx
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import type { CalendarEvent, UserProfile, JWTPayload } from "../types/types";
-import { TbChevronLeft } from "react-icons/tb";
+import { TbChevronLeft, TbX } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { CiBellOn } from "react-icons/ci";
 
 export default function CalendarPage() {
   const navigate = useNavigate();
   const { token } = useAuth();
+
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [filter, setFilter] = useState<"upcoming" | "past">("upcoming");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
@@ -67,7 +69,6 @@ export default function CalendarPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchEvents();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -79,45 +80,85 @@ export default function CalendarPage() {
   if (loading) return <div>Chargement du calendrier…</div>;
   if (error) return <div className="text-red-600">{error}</div>;
 
+  // Filtre des événements selon la date actuelle
+  const now = new Date();
+  const filteredEvents = events.filter((ce) => {
+    const eventDate = new Date(ce.event.start_date);
+    return filter === "upcoming" ? eventDate > now : eventDate < now;
+  });
+
   return (
-    <section className="py-24 min-h-screen relative">
-      <div className="mx-auto w-full max-w-2xl">
-        <div
-          onClick={() => navigate("/")}
-          className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
+    <section className="p-0 flex flex-col min-h-screen relative">
+      {/* Bouton retour */}
+      <div
+        onClick={() => navigate("/")}
+        className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
+      >
+        <TbChevronLeft className="text-3xl text-primary-darker" />
+      </div>
+
+      {/* Titre */}
+      <h1 className="text-xl text-center mt-16 mb-4">Mon Agenda</h1>
+
+      {/* Boutons de filtre */}
+      <div className="flex-center space-x-4 mb-6 bg-gray-200 rounded-3xl p-1 mx-auto">
+        <button
+          onClick={() => setFilter("upcoming")}
+          className={`py-1 px-3 rounded-2xl font-medium focus:outline-none transition 
+            ${
+              filter === "upcoming"
+                ? "bg-white text-primary-darker"
+                : "text-gray-600"
+            }`}
         >
-          <TbChevronLeft className="text-3xl text-primary-darker" />
-        </div>
-        <h1 className="text-xl text-center">Agenda</h1>
-        {events.length === 0 ? (
-          <p>Aucun événement enregistré.</p>
+          À VENIR
+        </button>
+        <button
+          onClick={() => setFilter("past")}
+          className={`py-1 px-3 rounded-full font-medium focus:outline-none transition 
+            ${
+              filter === "past"
+                ? "bg-white text-primary-darker"
+                : "text-gray-600"
+            }`}
+        >
+          PASSÉ
+        </button>
+      </div>
+
+      {/* Container gradient à partir du titre jusqu'en bas */}
+      <div className="flex-1 bg-gradient-to-t from-[#845def] to-[#56d2d2] p-6 rounded-2xl">
+        {filteredEvents.length === 0 ? (
+          <p className="text-center text-white">
+            {filter === "upcoming"
+              ? "Il n'y a pas d'événements à venir."
+              : "Il n'y a pas d'événements passés."}
+          </p>
         ) : (
-          <ul className="space-y-4">
-            {events.map((ce) => (
-              <li
+          <div className="space-y-4">
+            {filteredEvents.map((ce) => (
+              <div
                 key={ce.calendar_event_id}
-                className="p-4 border rounded-lg space-y-2"
+                className="relative bg-white p-4 rounded-lg shadow-md space-y-2"
               >
-                <p>
-                  <span className="font-semibold">Titre :</span>{" "}
-                  {ce.event.title}
-                </p>
-                <p>
-                  <span className="font-semibold">Date :</span>{" "}
-                  {new Date(ce.event.start_date).toLocaleString()}
-                </p>
-                {ce.wants_reminder && (
-                  <p className="text-sm text-gray-600">Rappel activé</p>
-                )}
                 <button
                   onClick={() => removeFromCalendar(ce.event.event_id)}
-                  className="text-red-600 hover:underline"
+                  className="absolute top-2 right-2 text-gray-400 hover:text-red-600"
+                  aria-label="Supprimer"
                 >
-                  Supprimer de mon calendrier
+                  <TbX size={20} />
                 </button>
-              </li>
+                <p className="font-semibold">{ce.event.title}</p>
+                <p>{new Date(ce.event.start_date).toLocaleString()}</p>
+                {ce.wants_reminder && (
+                  <div className="flex items-center space-x-2">
+                    <CiBellOn />
+                    <p className="text-sm text-gray-600">Rappel activé</p>
+                  </div>
+                )}
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </section>

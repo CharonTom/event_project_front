@@ -1,6 +1,9 @@
 import singer from "../assets/singer-girl.png";
+import { useNavigate } from "react-router-dom";
 
 function HomeBanner() {
+  const navigate = useNavigate();
+
   return (
     <div
       className="my-8 pl-4 pt-6 relative w-full overflow-hidden 
@@ -18,7 +21,12 @@ function HomeBanner() {
         <p className="mb-6 font-semibold">Organisez-vous des événements ?</p>
         <p className="mb-6">Faisons bouger le monde ensemble</p>
         <p className="mb-6">Créer • Promouvoir • Vendre</p>
-        <button className="btn-primary py-3">Créer un événement</button>
+        <button
+          onClick={() => navigate("/events/create")}
+          className="btn-primary py-3"
+        >
+          Créer un événement
+        </button>
       </div>
     </div>
   );
