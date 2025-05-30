@@ -4,6 +4,7 @@ import Select, { StylesConfig } from "react-select";
 import axios from "axios";
 import type { Category, EventFormType as EventFormType } from "../types/types";
 import type { EventFormProps } from "../types/types";
+import type { EventFormProps } from "../types/types";
 
 export default function EventForm({
   initialData = {},
