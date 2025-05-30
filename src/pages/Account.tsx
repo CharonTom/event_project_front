@@ -76,6 +76,7 @@ export default function Account() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEvents(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {}
   }, [token, BASE_URL]);
 
