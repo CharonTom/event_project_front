@@ -41,7 +41,7 @@ export interface Event {
   categories?: Category[];
 }
 
-export interface EventForm {
+export interface EventFormType {
   title: string;
   description: string;
   start_date: string;
@@ -85,4 +85,12 @@ export interface EventHomeCardProps {
 export interface CEFProps {
   onSuccess: () => void;
   onCancel: () => void;
+}
+
+export interface EventFormProps {
+  initialData?: Partial<EventFormType>;
+  onSubmit: (formData: FormData) => Promise<void>;
+  onCancel?: () => void;
+  onDelete?: () => void;
+  submitLabel?: string;
 }
