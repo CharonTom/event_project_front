@@ -14,7 +14,7 @@ export default function EventForm({
 }: EventFormProps) {
   const [form, setForm] = useState<Partial<EventFormType>>({
     title: "",
-    description: ""
+    description: "",
     start_date: "",
     end_date: "",
     location: "",
