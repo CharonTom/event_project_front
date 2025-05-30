@@ -82,7 +82,7 @@ export default function Account() {
 
   useEffect(() => {
     if (!token) {
-      setError("Vous devez être connecté.");
+      setError("Vous devez être connecté");
       setLoading(false);
       return;
     }
