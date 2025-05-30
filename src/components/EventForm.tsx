@@ -4,7 +4,6 @@ import Select, { StylesConfig } from "react-select";
 import axios from "axios";
 import type { Category, EventFormType as EventFormType } from "../types/types";
 import type { EventFormProps } from "../types/types";
-import type { EventFormProps } from "../types/types";
 
 export default function EventForm({
   initialData = {},
@@ -15,7 +14,7 @@ export default function EventForm({
 }: EventFormProps) {
   const [form, setForm] = useState<Partial<EventFormType>>({
     title: "",
-    description: "",
+    description: ""
     start_date: "",
     end_date: "",
     location: "",
