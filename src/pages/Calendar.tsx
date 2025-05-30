@@ -69,6 +69,7 @@ export default function CalendarPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchEvents();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-anyy
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
