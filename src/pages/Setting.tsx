@@ -47,6 +47,7 @@ function Setting() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -87,6 +88,7 @@ function Setting() {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/logout", { replace: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
