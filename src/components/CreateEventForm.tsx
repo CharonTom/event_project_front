@@ -4,8 +4,9 @@ import { useAuth } from "../contexts/AuthContext";
 import type { Category, CEFProps } from "../types/types";
 import { TbChevronLeft } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
-export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
+export default function CreateEventForm({ onSuccess }: CEFProps) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -15,8 +16,10 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
   const [location, setLocation] = useState("");
   const [city, setCity] = useState("");
   const [price, setPrice] = useState<number>(0);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCats, setSelectedCats] = useState<number[]>([]);
+
   const [file, setFile] = useState<File | null>(null);
 
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +63,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
         },
       });
       onSuccess();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -69,6 +73,17 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
       setLoading(false);
     }
   };
+
+  // Prépare les options pour react-select
+  const categoryOptions = categories.map((cat) => ({
+    value: cat.category_id,
+    label: cat.name,
+  }));
+
+  // Valeur actuelle du select
+  const selectedOptions = categoryOptions.filter((opt) =>
+    selectedCats.includes(opt.value)
+  );
 
   // Classes utilitaires communes pour les champs sans bordure noire
   const inputClasses =
@@ -115,23 +130,44 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
           {/* Catégories */}
           <div>
             <label className="block mb-1">Catégories</label>
-            <select
-              multiple
-              required
-              value={selectedCats.map(String)}
-              onChange={(e) =>
-                setSelectedCats(
-                  Array.from(e.target.selectedOptions, (o) => +o.value)
-                )
-              }
-              className={inputClasses}
-            >
-              {categories.map((cat) => (
-                <option key={cat.category_id} value={cat.category_id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              isMulti
+              options={categoryOptions}
+              value={selectedOptions}
+              onChange={(opts) => setSelectedCats(opts.map((o) => o.value))}
+              placeholder="Sélectionnez des catégories"
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  backgroundColor: "#56d2d233",
+                  border: "none",
+                  boxShadow: "none",
+                  outline: "none",
+                  "&:hover": {
+                    border: "none",
+                  },
+                  "&:focus": {
+                    border: "none",
+                    boxShadow: "none",
+                  },
+                }),
+                option: (base, { isFocused, isSelected }) => ({
+                  ...base,
+                  backgroundColor: isSelected
+                    ? "#DBEAFE"
+                    : isFocused
+                    ? "#F3F4F6"
+                    : undefined,
+                  color: isSelected ? "#1E3A8A" : base.color,
+                  cursor: "pointer",
+                }),
+                multiValue: (base) => ({
+                  ...base,
+                  backgroundColor: "#F3F3F3",
+                  borderRadius: "5px",
+                }),
+              }}
+            />
           </div>
 
           <h2 className="text-xl font-semibold">Date et lieu</h2>
@@ -200,7 +236,7 @@ export default function CreateEventForm({ onSuccess, onCancel }: CEFProps) {
           <h2 className="text-xl font-semibold">Médias</h2>
           <div className="flex items-center">
             {/* Bouton personnalisé pour ouvrir le sélecteur de fichier */}
-            <label htmlFor="file-upload" className="btn-primary py-2">
+            <label htmlFor="file-upload" className="btn-white py-2 mr-2">
               Parcourir…
             </label>
             {/* Affichage du nom du fichier ou d’un texte par défaut */}

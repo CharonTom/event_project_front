@@ -8,6 +8,7 @@ import axios from "axios";
 import { TbChevronLeft } from "react-icons/tb";
 import EventHomeCard from "../components/EventHomeCard";
 import { GoPlusCircle } from "react-icons/go";
+import { IoSettingsOutline } from "react-icons/io5";
 
 // Utility to capitalize a name
 const capitalize = (str: string = ""): string =>
@@ -145,12 +146,10 @@ export default function Account() {
                     event={e}
                     baseUrl={BASE_URL}
                   />
-                  <p
-                    className="btn-primary w-min p-2 text-sm"
+                  <IoSettingsOutline
                     onClick={() => navigate(`/events/${e.event_id}/edit`)}
-                  >
-                    Editer
-                  </p>
+                    className="text-primary-darker text-xl"
+                  />
                 </div>
               ))}
             </div>
