@@ -80,7 +80,7 @@ export default function EditAccount() {
       await axios.patch(`${BASE_URL}/users/${userId}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      navigate("/account", { replace: true });
+      navigate("/setting", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
@@ -98,7 +98,7 @@ export default function EditAccount() {
   return (
     <section className="py-24 min-h-screen relative">
       <div
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/setting")}
         className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
       >
         <TbChevronLeft className="text-3xl text-primary-darker" />

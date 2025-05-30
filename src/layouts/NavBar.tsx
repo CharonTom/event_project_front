@@ -26,7 +26,7 @@ export default function Navbar() {
             <FaHome className="text-2xl" />
             <p className="text-[10px]">Accueil</p>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/explore"
             className={({ isActive }) =>
               `flex-1 flex flex-col items-center text-center transition-colors ${linkClasses(
@@ -36,7 +36,11 @@ export default function Navbar() {
           >
             <FaSearch className="text-2xl" />
             <p className="text-[10px]">Rechercher</p>
-          </NavLink>
+          </NavLink> */}
+          <div className="flex-1 flex flex-col items-center text-center transition-colors text-grey-text">
+            <FaSearch className="text-2xl" />
+            <p className="text-[10px]">Rechercher</p>
+          </div>
           <NavLink
             to="/account"
             className={({ isActive }) =>

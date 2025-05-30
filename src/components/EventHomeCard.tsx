@@ -100,14 +100,14 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
           )}
 
           {/* Dynamic date badge */}
-          <div className="absolute top-2 left-2 bg-gray-100/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
+          <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-none h-10 w-10 rounded-lg flex-center">
             <div className="text-[10px] font-bold leading-none px-1 text-primary-darker text-center">
               {badgeDay} <br /> {badgeMonth}
             </div>
           </div>
 
           {/* Bookmark icon */}
-          <div className="absolute top-2 right-2 bg-gray-200/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
+          <div className="absolute top-2 right-2 bg-white/80 backdrop-blur-none h-10 w-10 rounded-lg flex-center">
             <FaBookmark
               onClick={(e) => {
                 e.preventDefault();
