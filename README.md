@@ -1,50 +1,33 @@
-# React + TypeScript + Vite
+# EVENTLY FRONT PART
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EVENTLY est une application web de gestion d’événements développée dans le cadre d’un projet de fin d’année. Cet README décrit toutes les étapes nécessaires pour cloner, configurer et démarrer la partie front de l’application en local.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prérequis
 
-## Expanding the ESLint configuration
+Avant de démarrer, assurez-vous d’avoir installé sur votre machine :
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Avoir fini de set-up le back-end de l'application
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (inclus avec Node.js)
+- Une base de données MariaDB / MySQL
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Cloner le repo ou télécharger le via le zip
+- Faites "npm install" à la racine du projet pour installer les dépendances
+- Créer un fichier .env à la racine du projet et renseignez les variables nécessaires:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- VITE_SERVER_URL= saisissez l'adresse de votre server back-end qui sera fetch depuis le front
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Lancer l'application
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+npm run dev
+
+## Technologies utilisées
+
+- React.js
+- TailwindCSS
+
+Auteur : Tom Charon
