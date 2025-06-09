@@ -1,35 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import TodayBanner from "../assets/today-banner.png";
+import type { Event as EventType, Category } from "../types/types";
+import { EventContext } from "../contexts/EventContext";
 
-// Centre de la carte
+// Centre de la carte sur Lyon
 const lyonCenter: [number, number] = [45.764, 4.8357];
 
-// Tes adresses
-const eventsStatic = [
-  {
-    id: 1,
-    address: "1 place du change, 69002 Lyon",
-    price: 32,
-    title: "Concert Jazz",
-  },
-  {
-    id: 2,
-    address: "12 Rue de la République, 69002 Lyon",
-    price: 45,
-    title: "Exposition Photo",
-  },
-  {
-    id: 3,
-    address: "3 Rue de la Barre, 69002 Lyon",
-    price: 20,
-    title: "Atelier Cuisine",
-  },
-];
-
-// Badge prix cliquable
+// Création du badge prix cliquable
 const createPriceIcon = (price: number) =>
   L.divIcon({
     className: "leaflet-interactive border-none bg-transparent",
@@ -38,54 +17,73 @@ const createPriceIcon = (price: number) =>
     popupAnchor: [0, -10],
   });
 
-export default function SearchMap() {
-  const [events, setEvents] = useState<
-    Array<{
-      id: number;
-      lat: number;
-      lng: number;
-      price: number;
-      title: string;
-    }>
-  >([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState<null | (typeof events)[0]>(
-    null
-  );
+// Interface pour les marqueurs enrichis (sans description)
+interface MarkerData {
+  id: number;
+  lat: number;
+  lng: number;
+  price: number;
+  title: string;
+  address: string;
+  image?: string;
+  categories?: Category[];
+}
 
-  // Géocodage
+export default function SearchMap() {
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+  const { events: eventsFromContext } = useContext(EventContext);
+  const [markers, setMarkers] = useState<MarkerData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<MarkerData | null>(null);
+
   useEffect(() => {
+    if (!eventsFromContext || eventsFromContext.length === 0) return;
+
     (async () => {
-      const geo: typeof events = [];
-      for (let evt of eventsStatic) {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
-            evt.address
-          )}`
-        );
-        const data = await res.json();
-        if (data[0]) {
-          geo.push({
-            id: evt.id,
-            lat: +data[0].lat,
-            lng: +data[0].lon,
-            price: evt.price,
-            title: evt.title,
-          });
+      setLoading(true);
+      const geoResults: MarkerData[] = [];
+
+      for (const evt of eventsFromContext as EventType[]) {
+        const fullAddress = `${evt.location}, ${evt.city}`;
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+              fullAddress
+            )}`
+          );
+          const data = await res.json();
+          if (data?.[0]?.lat && data?.[0]?.lon) {
+            geoResults.push({
+              id: evt.event_id,
+              lat: parseFloat(data[0].lat),
+              lng: parseFloat(data[0].lon),
+              price: parseFloat(evt.price) || 0,
+              title: evt.title,
+              address: fullAddress,
+              image: evt.image,
+              categories: evt.categories,
+            });
+          } else {
+            console.warn(`Aucune coordonnée trouvée pour ${fullAddress}`);
+          }
+        } catch (error) {
+          console.error(`Erreur géocodage pour ${fullAddress}:`, error);
         }
         await new Promise((r) => setTimeout(r, 1000));
       }
-      setEvents(geo);
+
+      setMarkers(geoResults);
       setLoading(false);
     })();
-  }, []);
+  }, [eventsFromContext]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <span className="text-gray-500">Chargement…</span>
       </div>
     );
+  }
 
   return (
     <div className="relative h-screen w-full">
@@ -99,44 +97,47 @@ export default function SearchMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
-        {events.map((evt) => (
+        {markers.map((m) => (
           <Marker
-            key={evt.id}
-            position={[evt.lat, evt.lng]}
-            icon={createPriceIcon(evt.price)}
-            eventHandlers={{
-              click: () => setSelectedEvent(evt),
-            }}
+            key={m.id}
+            position={[m.lat, m.lng]}
+            icon={createPriceIcon(m.price)}
+            eventHandlers={{ click: () => setSelected(m) }}
           />
         ))}
       </MapContainer>
 
-      {/* Carte de détail en bas */}
-      {selectedEvent && (
-        <div className="fixed bottom-20 w-[90%]  right-[5%] bg-white shadow-lg  z-10 h-1/4 overflow-auto rounded-2xl">
+      {selected && (
+        <div className="fixed bottom-20 h-1/4 w-[90%] right-[5%] bg-white shadow-lg z-10 max-h-1/2 overflow-auto rounded-2xl">
           <div className="flex h-full">
             <img
-              src={TodayBanner}
-              alt={selectedEvent.title}
-              className="h-full w-[40%] object-cover  mb-2 bg-gray-100"
+              src={`${BASE_URL}${selected.image}`}
+              alt={selected.title}
+              className="h-full w-[40%] object-cover mb-2 bg-gray-100 rounded-l-2xl"
             />
-            <div className="p-4 w-[60%]">
+            <div className="p-4 w-[60%] flex flex-col">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="">{selectedEvent.title}</h2>
+                <h2 className="">{selected.title}</h2>
                 <button
-                  onClick={() => setSelectedEvent(null)}
+                  onClick={() => setSelected(null)}
                   className="text-gray-500 hover:text-gray-800"
                 >
                   ✕
                 </button>
               </div>
-              <p className="text-xs text-gray-600 mb-2">
-                <span className="">{selectedEvent.price} €</span>
-              </p>
+              <p className="text-xs text-gray-600 mb-1">{selected.address}</p>
+              <p className="text-xs text-gray-600 mb-2">{selected.price} €</p>
+              {selected.categories && (
+                <div className="flex gap-x-2">
+                  {selected.categories.map((cat) => (
+                    <span key={cat.id} className="tag text-[10px] p-1">
+                      {cat.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-
-          {/* ajoute ici image, adresse, description… */}
         </div>
       )}
     </div>
