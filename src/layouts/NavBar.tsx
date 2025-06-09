@@ -7,9 +7,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
-    isActive
-      ? "text-primary font-semibold"
-      : "text-grey-text hover:text-blue-800";
+    isActive ? "text-primary font-semibold" : "text-grey-text";
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-grey-bg shadow py-4 px-4 flex justify-center z-50">
@@ -26,8 +24,8 @@ export default function Navbar() {
             <FaHome className="text-2xl" />
             <p className="text-[10px]">Accueil</p>
           </NavLink>
-          {/* <NavLink
-            to="/explore"
+          <NavLink
+            to="/search-map"
             className={({ isActive }) =>
               `flex-1 flex flex-col items-center text-center transition-colors ${linkClasses(
                 { isActive }
@@ -36,11 +34,8 @@ export default function Navbar() {
           >
             <FaSearch className="text-2xl" />
             <p className="text-[10px]">Rechercher</p>
-          </NavLink> */}
-          <div className="flex-1 flex flex-col items-center text-center transition-colors text-grey-text">
-            <FaSearch className="text-2xl" />
-            <p className="text-[10px]">Rechercher</p>
-          </div>
+          </NavLink>
+
           <NavLink
             to="/account"
             className={({ isActive }) =>

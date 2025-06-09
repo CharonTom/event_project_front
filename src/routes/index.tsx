@@ -16,6 +16,7 @@ import MyEvents from "../pages/MyEvents";
 import EditEvent from "../pages/EditEvent";
 import ChoicePage from "../auth/ChoicePage";
 import Setting from "../pages/Setting";
+import SearchMap from "../pages/SearchMap";
 
 const AppRoutes = () => (
   <Routes>
@@ -23,6 +24,7 @@ const AppRoutes = () => (
       {/* publiques */}
       <Route index element={<Home />} />
       <Route path="details/:id" element={<Details />} />
+      <Route path="search-map" element={<SearchMap />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="connection-gate" element={<ChoicePage />} />
