@@ -32,7 +32,7 @@ const eventsStatic = [
 const createPriceIcon = (price: number) =>
   L.divIcon({
     className: "", // supprime le style par défaut
-    html: `<div class=\"bg-red-500 text-white px-2 py-1 rounded-md font-bold shadow\">${price} €</div>`,
+    html: `<div class=\"bg-primary text-white px-2 py-1 rounded-md font-bold shadow\">${price}€</div>`,
     iconSize: [null, null],
     popupAnchor: [0, -10],
   });
@@ -98,7 +98,7 @@ export default function SearchMap() {
   }
 
   return (
-    <div className="h-screen w-full">
+    <div className="z-0 h-screen w-full">
       <MapContainer
         center={lyonCenter}
         zoom={13}
@@ -117,10 +117,12 @@ export default function SearchMap() {
             icon={createPriceIcon(evt.price)}
           >
             <Popup>
-              <h3 className="text-lg font-semibold">{evt.title}</h3>
-              <p className="mt-1">
-                <strong>{evt.price} €</strong>
-              </p>
+              <div className="bg-secondary">
+                <h3 className="text-lgfont-semibold">{evt.title}</h3>
+                <p className="mt-1">
+                  <strong>{evt.price} €</strong>
+                </p>
+              </div>
             </Popup>
           </Marker>
         ))}
