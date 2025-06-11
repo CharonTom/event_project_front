@@ -85,7 +85,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
             Du {formatDate(event.start_date)} <br /> Au{" "}
             {formatDate(event.end_date)}
           </p>
-          <p className="text-sm text-gray-500 mb-2 flex items-center gap-x-1">
+          <p className="text-xs text-gray-500 mb-2 flex items-center gap-x-1">
             <FaLocationDot /> {event.location}
             {event.city && `, ${event.city}`}
           </p>
