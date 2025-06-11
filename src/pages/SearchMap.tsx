@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Event as EventType, Category } from "../types/types";
 import { EventContext } from "../contexts/EventContext";
+import { Link } from "react-router-dom";
 
 // Centre de la carte sur Lyon
 const lyonCenter: [number, number] = [45.764, 4.8357];
@@ -13,13 +14,14 @@ const createPriceIcon = (price: number) =>
   L.divIcon({
     className: "leaflet-interactive border-none bg-transparent",
     html: `<div class="bg-primary text-white px-2 py-1 rounded-md font-bold">${price}€</div>`,
+    // @ts-expect-error can't put null without error
     iconSize: [null, null],
     popupAnchor: [0, -10],
   });
 
-// Interface pour les marqueurs enrichis (sans description)
 interface MarkerData {
   id: number;
+  event_id: number;
   lat: number;
   lng: number;
   price: number;
@@ -55,6 +57,7 @@ export default function SearchMap() {
           if (data?.[0]?.lat && data?.[0]?.lon) {
             geoResults.push({
               id: evt.event_id,
+              event_id: evt.event_id,
               lat: parseFloat(data[0].lat),
               lng: parseFloat(data[0].lon),
               price: parseFloat(evt.price) || 0,
@@ -108,37 +111,47 @@ export default function SearchMap() {
       </MapContainer>
 
       {selected && (
-        <div className="fixed bottom-20 h-1/4 w-[90%] right-[5%] bg-white shadow-lg z-10 max-h-1/2 overflow-auto rounded-2xl">
-          <div className="flex h-full">
-            <img
-              src={`${BASE_URL}${selected.image}`}
-              alt={selected.title}
-              className="h-full w-[40%] object-cover mb-2 bg-gray-100 rounded-l-2xl"
-            />
-            <div className="p-4 w-[60%] flex flex-col">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="">{selected.title}</h2>
-                <button
-                  onClick={() => setSelected(null)}
-                  className="text-gray-500 hover:text-gray-800"
-                >
-                  ✕
-                </button>
-              </div>
-              <p className="text-xs text-gray-600 mb-1">{selected.address}</p>
-              <p className="text-xs text-gray-600 mb-2">{selected.price} €</p>
-              {selected.categories && (
-                <div className="flex gap-x-2">
-                  {selected.categories.map((cat) => (
-                    <span key={cat.id} className="tag text-[10px] p-1">
-                      {cat.name}
-                    </span>
-                  ))}
+        <Link to={`/details/${selected.event_id}`}>
+          <div className="fixed bottom-20 h-1/4 w-[90%] right-[5%] bg-white shadow-lg z-10 max-h-1/2 overflow-auto rounded-2xl">
+            <div className="flex h-full">
+              <img
+                src={`${BASE_URL}${selected.image}`}
+                alt={selected.title}
+                className="h-full w-[40%] object-cover mb-2 bg-gray-100 rounded-l-2xl"
+              />
+              <div className="p-4 w-[60%] flex flex-col">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="">{selected.title}</h2>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelected(null);
+                    }}
+                    className="text-gray-500 hover:text-gray-800"
+                  >
+                    ✕
+                  </button>
                 </div>
-              )}
+                <p className="text-xs text-gray-600 mb-1">{selected.address}</p>
+                <p className="text-xs text-gray-600 mb-2">{selected.price} €</p>
+                {selected.categories && (
+                  <div className="flex gap-x-2">
+                    {selected.categories.map((cat) => (
+                      <span
+                        key={cat.category_id}
+                        className="tag text-[10px] p-1"
+                      >
+                        {cat.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
       )}
     </div>
   );
