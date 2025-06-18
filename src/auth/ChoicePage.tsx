@@ -1,4 +1,4 @@
-import logo from "../assets/logo-evently.png";
+import logo from "../assets/Image1.png";
 import { useNavigate } from "react-router-dom";
 
 function ChoicePage() {
@@ -12,13 +12,13 @@ function ChoicePage() {
             onClick={() => navigate("/login")}
             className="btn-secondary w-[80%]"
           >
-            Log in
+            Se connecter
           </button>
           <button
             onClick={() => navigate("/register")}
             className="btn-primary w-[80%]"
           >
-            Sign up
+            S'inscrire
           </button>
         </div>
       </div>

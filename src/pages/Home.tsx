@@ -10,25 +10,26 @@ import type { Event } from "../types/types";
 const Home = () => {
   const { events } = useContext(EventContext);
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
+  console.log(events);
 
-  // Regroupe les événements par nom de catégorie parente
   const eventsByParent: Record<string, Event[]> = {};
+
   events.forEach((evt) => {
     const parents = evt.categories?.length
       ? Array.from(
-          new Set(evt.categories.map((cat) => cat.parent?.name ?? cat.name))
+          new Set(evt.categories.map((cat) => cat.parent?.name ?? cat.name)) // Set pour éviter les doublons, Array.from pour revenir à un tableau
         )
       : ["Sans catégorie"];
 
     parents.forEach((parent) => {
       if (!eventsByParent[parent]) {
-        eventsByParent[parent] = [];
+        eventsByParent[parent] = []; // On créer les clés si elles n'existent pas avec un tableau vide en valeur
       }
       eventsByParent[parent].push(evt);
     });
   });
 
-  const parentNames = Object.keys(eventsByParent);
+  const parentNames = Object.keys(eventsByParent); // Récupère les noms des catégories parentes
 
   return (
     <section className="pb-20">

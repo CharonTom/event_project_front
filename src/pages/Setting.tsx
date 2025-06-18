@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 
 import axios from "axios";
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
+import { MdPhotoCamera } from "react-icons/md";
 
 function Setting() {
   const navigate = useNavigate();
@@ -116,8 +117,13 @@ function Setting() {
         </div>
 
         <div className="my-4 flex items-center justify-around">
-          <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
-            {getInitials(user?.first_name, user?.last_name)}
+          <div className="relative">
+            <div className="text-white text-3xl bg-primary rounded-full h-20 w-20 flex-center font-bold">
+              {getInitials(user?.first_name, user?.last_name)}
+            </div>
+            <div className="absolute -bottom-1 -right-1 bg-grey-bg rounded-lg">
+              <MdPhotoCamera className="text-primary m-2" />
+            </div>
           </div>
           <div className="text-center">
             <div className="font-semibold text-xl">
@@ -133,6 +139,10 @@ function Setting() {
             <p onClick={handleEdit}>Modifier le profil</p>
             <TbChevronRight className="text-2xl" />
           </div>
+          <div className="my-6 flex items-center justify-between">
+            <p>Moyen de paiement</p>
+            <TbChevronRight className="text-2xl" />
+          </div>
 
           <div className="my-6 flex items-center justify-between">
             <p>Préférences d'événements</p>
@@ -143,7 +153,7 @@ function Setting() {
             <TbChevronRight className="text-2xl" />
           </div>
           <div className="my-6 flex items-center justify-between">
-            <p>FAQ</p>
+            <p>Foire aux questions</p>
             <TbChevronRight className="text-2xl" />
           </div>
           <div className="my-6 flex items-center justify-between">
@@ -157,12 +167,11 @@ function Setting() {
         </div>
 
         <div className="text-center text-primary">
-          <p className="text-red-500 mb-4" onClick={handleDelete}>
+          <p className="text-red-500 my-4" onClick={handleDelete}>
             Supprimer mon compte
           </p>
-          <p className="mb-2">conditions d'utilisations</p>
-          <p className="mb-2 text-gray-500 font-semibold">---</p>
-          <p className="mb-2">Politique de confidentialité</p>
+          <p className="mb-4">conditions d'utilisations</p>
+          <p className="mb-4">Politique de confidentialité</p>
         </div>
       </div>
     </section>
