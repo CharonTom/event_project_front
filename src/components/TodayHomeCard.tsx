@@ -5,7 +5,7 @@ import TodayBanner from "../assets/today-banner.png";
 function TodayHomeCard() {
   return (
     <div className="py-4">
-      <p className="my-4">Aujourd'hui</p>
+      <p className="my-4">Evénement sponsorisé</p>
       <div className="relative">
         {/* <div className="absolute -left-5 top-[40%] text-7xl text-primary">
           <TbChevronLeft />

@@ -7,7 +7,7 @@ function HomeBanner() {
   return (
     <div
       className="my-8 pl-4 pt-6 relative w-full overflow-hidden 
-                    bg-linear-to-t from-[#845def] from-2% to-[#56d2d2] 
+                    bg-primary-darker 
                     rounded-3xl h-64 text-white"
     >
       <img
@@ -23,7 +23,7 @@ function HomeBanner() {
         <p className="mb-6">Créer • Promouvoir • Vendre</p>
         <button
           onClick={() => navigate("/events/create")}
-          className="btn-primary py-3"
+          className="btn-secondary py-3"
         >
           Créer un événement
         </button>

@@ -43,9 +43,8 @@ const Register: React.FC = () => {
       navigate("/account", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Erreur lors de l’enregistrement"
-      );
+      const msgs = err.response?.data?.message;
+      setError(Array.isArray(msgs) ? msgs.join("\n") : msgs);
     } finally {
       setLoading(false);
     }
@@ -61,8 +60,11 @@ const Register: React.FC = () => {
           <TbChevronLeft className="text-3xl text-primary-darker" />
         </div>
         <h1 className="text-[32px] font-bold">Créez votre compte</h1>
-        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-
+        {error && (
+          <p className="text-red-600 text-sm text-center whitespace-pre-line">
+            {error}
+          </p>
+        )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md space-y-4">
             {/* Prénom */}
