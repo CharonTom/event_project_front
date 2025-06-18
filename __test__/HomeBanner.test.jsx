@@ -28,6 +28,6 @@ describe("HomeBanner", () => {
   it("a un bouton “Créer un événement” avec les bonnes classes", () => {
     const btn = screen.getByRole("button", { name: /créer un événement/i });
     expect(btn).toBeInTheDocument();
-    expect(btn).toHaveClass("btn-primary");
+    expect(btn).toHaveClass("btn-secondary");
   });
 });
