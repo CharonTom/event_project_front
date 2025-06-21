@@ -1,6 +1,8 @@
 // src/routes/index.tsx
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+import ScrollToTopLayout from "../layouts/ScrollToTopLayout";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Details from "../pages/Details";
@@ -18,31 +20,33 @@ import ChoicePage from "../auth/ChoicePage";
 import Setting from "../pages/Setting";
 import SearchMap from "../pages/SearchMap";
 
-const AppRoutes = () => (
+const AppRoutes: React.FC = () => (
   <Routes>
-    <Route path="/" element={<MainLayout />}>
-      {/* publiques */}
-      <Route index element={<Home />} />
-      <Route path="details/:id" element={<Details />} />
-      <Route path="search-map" element={<SearchMap />} />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="connection-gate" element={<ChoicePage />} />
+    <Route element={<ScrollToTopLayout />}>
+      <Route path="/" element={<MainLayout />}>
+        {/* publiques */}
+        <Route index element={<Home />} />
+        <Route path="details/:id" element={<Details />} />
+        <Route path="search-map" element={<SearchMap />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="connection-gate" element={<ChoicePage />} />
 
-      {/* protégées */}
-      <Route element={<PrivateRoute />}>
-        <Route path="account" element={<Account />} />
-        <Route path="setting" element={<Setting />} />
-        <Route path="setting/edit" element={<EditAccount />} />
-        <Route path="/my-events" element={<MyEvents />} />
-        <Route path="events/create" element={<CreateEvent />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="logout" element={<Logout />} />
-        <Route path="/events/:id/edit" element={<EditEvent />} />
+        {/* protégées */}
+        <Route element={<PrivateRoute />}>
+          <Route path="account" element={<Account />} />
+          <Route path="setting" element={<Setting />} />
+          <Route path="setting/edit" element={<EditAccount />} />
+          <Route path="my-events" element={<MyEvents />} />
+          <Route path="events/create" element={<CreateEvent />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="events/:id/edit" element={<EditEvent />} />
+        </Route>
+
+        {/* catch-all */}
+        <Route path="*" element={<div>404 - Page non trouvée</div>} />
       </Route>
-
-      {/* catch-all */}
-      <Route path="*" element={<div>404 - Page non trouvée</div>} />
     </Route>
   </Routes>
 );

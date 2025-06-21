@@ -39,7 +39,7 @@ const Login: React.FC = () => {
           onClick={() => navigate("/connection-gate")}
           className="flex-center absolute top-16 left-12 bg-white h-12 w-12 rounded-xl"
         >
-          <TbChevronLeft className="text-3xl text-primary-darker" />
+          <TbChevronLeft className="text-3xl text-primary" />
         </div>
 
         <h1 className="text-[32px] font-bold">Connectez vous à votre compte</h1>

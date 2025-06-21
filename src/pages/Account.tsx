@@ -106,7 +106,7 @@ export default function Account() {
           onClick={() => navigate("/")}
           className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
         >
-          <TbChevronLeft className="text-3xl text-primary-darker" />
+          <TbChevronLeft className="text-3xl text-primary" />
         </div>
         <div
           onClick={() => navigate("/events/create")}
@@ -155,7 +155,7 @@ export default function Account() {
                   />
                   <IoSettingsOutline
                     onClick={() => navigate(`/events/${e.event_id}/edit`)}
-                    className="text-primary-darker text-xl"
+                    className="text-primary text-xl"
                   />
                 </div>
               ))}

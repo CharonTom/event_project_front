@@ -11,8 +11,8 @@
 @theme {
   --font-biryani: "Biryani", sans-serif;
   --font-kanit: "Kanit", sans-serif;
-  --color-primary: #56d2d2;
-  --color-primary-darker: #42babf;
+  --color-primary: #1e7c83;
+  --color-primary-lighter: #42babf;
   --color-primary-input: #56d2d233;
   --color-secondary: #593ea1;
   --color-grey-bg: #f3f3f3;
@@ -62,6 +62,7 @@
     background-origin: padding-box, border-box;
     background-clip: padding-box, border-box;
   }
+
   .tag-gradient-border {
     @apply py-2 px-3 rounded-2xl border-1 border-transparent;
     background-image: linear-gradient(#ffffff, #ffffff),
@@ -79,11 +80,11 @@
   }
 
   .btn-white {
-    @apply py-2 px-3 rounded-xl border-1 text-primary-darker bg-white;
+    @apply py-2 px-3 rounded-xl border-1 text-primary bg-white;
   }
 
   .tag {
-    @apply py-2 px-3 rounded-2xl border-1 text-primary-darker;
+    @apply py-2 px-3 rounded-2xl border-1 text-primary;
   }
 }
 

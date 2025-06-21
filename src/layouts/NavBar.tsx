@@ -3,7 +3,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "text-primary" : "text-grey-text";
+    isActive ? "text-primary" : "text-[#6D6D6D]";
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-grey-bg shadow py-4 px-4 flex justify-center z-50">
