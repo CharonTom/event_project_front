@@ -124,7 +124,7 @@ export default function EventForm({
             onClick={onCancel}
             className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
           >
-            <TbChevronLeft className="text-3xl text-primary-darker" />
+            <TbChevronLeft className="text-3xl text-primary" />
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">

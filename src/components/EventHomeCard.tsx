@@ -101,7 +101,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
 
           {/* Dynamic date badge */}
           <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-none h-10 w-10 rounded-lg flex-center">
-            <div className="text-[10px] font-bold leading-none px-1 text-primary-darker text-center">
+            <div className="text-[10px] font-bold leading-none px-1 text-primary-lighter text-center">
               {badgeDay} <br /> {badgeMonth}
             </div>
           </div>
@@ -114,7 +114,7 @@ const EventHomeCard = ({ event, baseUrl }: EventHomeCardProps) => {
                 e.stopPropagation();
                 void handleAddToCalendar();
               }}
-              className="text-primary-darker"
+              className="text-primary-lighter"
             />
           </div>
         </div>

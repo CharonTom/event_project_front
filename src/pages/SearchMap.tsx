@@ -13,7 +13,7 @@ const lyonCenter: [number, number] = [45.764, 4.8357];
 const createPriceIcon = (price: number) =>
   L.divIcon({
     className: "leaflet-interactive border-none bg-transparent",
-    html: `<div class="bg-primary text-white px-2 py-1 rounded-md font-bold">${price}€</div>`,
+    html: `<div class="bg-primary-lighter text-white px-2 py-1 rounded-md font-bold">${price}€</div>`,
     // @ts-expect-error can't put null without error
     iconSize: [null, null],
     popupAnchor: [0, -10],

@@ -89,7 +89,7 @@ const Details = () => {
           onClick={() => navigate("/")}
           className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl"
         >
-          <TbChevronLeft className="text-3xl text-primary-darker" />
+          <TbChevronLeft className="text-3xl text-primary" />
         </div>
 
         <div className="relative">
@@ -100,7 +100,7 @@ const Details = () => {
           <div className="absolute top-4 right-5 bg-gray-200/60 backdrop-blur-md h-10 w-10 rounded-lg flex-center">
             <FaBookmark
               onClick={AddEventToCalendar}
-              className="text-primary-darker text-xl"
+              className="text-primary text-xl"
             />
           </div>
         </div>
@@ -110,7 +110,7 @@ const Details = () => {
         <div className="my-1 p-4 flex flex-col gap-y-3">
           <div className="flex items-center gap-x-4">
             <div className="bg-white p-2 rounded-lg">
-              <FaCalendarAlt className="text-primary-darker" />
+              <FaCalendarAlt className="text-primary" />
             </div>
             <div className="text-sm">
               <p>{formatDate(evt.start_date)}</p>
@@ -119,7 +119,7 @@ const Details = () => {
           </div>
           <div className="flex items-center gap-x-4">
             <div className="bg-white p-2 rounded-lg">
-              <FaLocationDot className="text-primary-darker" />
+              <FaLocationDot className="text-primary" />
             </div>
             <div className="text-sm">
               {evt.location}, {evt.city}
@@ -163,7 +163,7 @@ const Details = () => {
           )}
         </div>
         <div className="flex justify-center">
-          <button className="bg-primary-darker text-white py-2 px-3 rounded-xl text-sm">
+          <button className="bg-primary text-white py-2 px-3 rounded-xl text-sm">
             à {evt.price} €
           </button>
         </div>
