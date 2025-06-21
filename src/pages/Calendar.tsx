@@ -95,7 +95,7 @@ export default function CalendarPage() {
         onClick={() => navigate("/")}
         className="flex-center absolute top-8 left-8 bg-white h-12 w-12 rounded-xl cursor-pointer"
       >
-        <TbChevronLeft className="text-3xl text-primary-darker" />
+        <TbChevronLeft className="text-3xl text-primary" />
       </div>
 
       {/* Titre */}
@@ -107,9 +107,7 @@ export default function CalendarPage() {
           onClick={() => setFilter("upcoming")}
           className={`py-1 px-3 rounded-2xl font-medium focus:outline-none transition 
             ${
-              filter === "upcoming"
-                ? "bg-white text-primary-darker"
-                : "text-gray-600"
+              filter === "upcoming" ? "bg-white text-primary" : "text-gray-600"
             }`}
         >
           À VENIR
@@ -117,11 +115,7 @@ export default function CalendarPage() {
         <button
           onClick={() => setFilter("past")}
           className={`py-1 px-3 rounded-full font-medium focus:outline-none transition 
-            ${
-              filter === "past"
-                ? "bg-white text-primary-darker"
-                : "text-gray-600"
-            }`}
+            ${filter === "past" ? "bg-white text-primary" : "text-gray-600"}`}
         >
           PASSÉ
         </button>

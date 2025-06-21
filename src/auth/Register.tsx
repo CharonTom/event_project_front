@@ -57,7 +57,7 @@ const Register: React.FC = () => {
           onClick={() => navigate("/connection-gate")}
           className="flex-center absolute top-12 left-12 bg-white h-12 w-12 rounded-xl"
         >
-          <TbChevronLeft className="text-3xl text-primary-darker" />
+          <TbChevronLeft className="text-3xl text-primary" />
         </div>
         <h1 className="text-[32px] font-bold">Créez votre compte</h1>
         {error && (

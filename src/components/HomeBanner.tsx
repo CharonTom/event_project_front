@@ -7,7 +7,7 @@ function HomeBanner() {
   return (
     <div
       className="my-8 pl-4 pt-6 relative w-full overflow-hidden 
-                    bg-primary-darker 
+                    bg-primary-lighter
                     rounded-3xl h-64 text-white"
     >
       <img
