@@ -32,7 +32,7 @@ const AppRoutes: React.FC = () => (
         <Route path="register" element={<Register />} />
         <Route path="connection-gate" element={<ChoicePage />} />
 
-        {/* protégées */}
+        {/* protégées  */}
         <Route element={<PrivateRoute />}>
           <Route path="account" element={<Account />} />
           <Route path="setting" element={<Setting />} />
